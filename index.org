@@ -4,4 +4,9 @@
 Here I have my pages
 
 * SNMT Approaches Applied to Phase Noise Excitation
-+ Here is the page: [[file:../STOCHNNMREP/rep1.html]]
++ Here is the page: [[https://nidish96.github.io/mypages/STOCHNNMREP/rep1.html]]
+
+#+begin_src inline-js
+  document.body.background='black';
+  document.body.color='white';
+#+end_src  
