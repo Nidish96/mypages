@@ -1,0 +1,524 @@
+#+title: Implementation and Validation of the Fokker-Planck Equation for Narrow-band excitation
+#+author: Nidish Balaji
+#+date: 2024:Jan:17
+#+options: toc:nil
+#+latex_header: \usepackage{biblatex}
+#+bibliography: Stochastic.bib
+#+cite_export: csl ieee.csl
+#+html_head: <script type="text/javascript" src="https://livejs.com/live.js"></script>
+#+html_head_extra: <style> .quiltish img { max-height: 400px; min-height: 100px; max-width: 100%;  } </style>
+#+html_head: <link rel="stylesheet" href="./org-info.css" type="text/css"/>
+# #+infojs_opt: view:overview mouse:underline toc:nil ltoc:nil
+#+html_head: <link rel="stylesheet" href="./tufte.css" type="text/css"/>
+#+html_head: <link rel="stylesheet" href="./ox-tufte.css" type="text/css" />
+
+#+html: <input id="fixbut" type="button" value="hide all" class="tglv" class="right">
+#+html: <input id="fixbut2" type="button" value="dark mode" class="tgld" class="right">
+
+* Week 1
+** Excitation Design (from [cite:@dimentbergProbabilityDensityExcursions2007a])
++ The excitation is designed through the stochastically defined phase $\sigma(t)$,
+  $$ d\sigma = \frac{\Omega}{F_s} dt + \frac{\nu}{F_s} dW, $$
+  where $W(t)$ is the unit Wiener process ($dW=\eta\sim\mathcal{N}(0,1)$), and $F_s$ is the sampling rate (in Hz).
++ The excitation signal is then written as
+  $$ f(t) = F \cos\sigma(t), $$
+  where $F$ is the excitation amplitude.
++ Theoretically, the spectrum this leads to is
+  $$ \Phi_{FF}(\omega) = \frac{\lambda^2\overline{\nu}^2}{4\pi}
+  \frac{\overline{\Omega}^2+\frac{\overline{\nu}^4}{4}+\omega^2}{(\Omega^2+\frac{\overline{\nu}^4}{4}-\omega^2)^2+\omega^2\overline{\nu}^4}\text{,
+    with } \overline{\nu}=\frac{\nu}{\sqrt{F_s}}.  $$
++ Here is an example of the averaged spectrum with $\Omega=100\,rad/s$, $\nu=5\sqrt{F_s}\,rad/s$, and $F_s=1024\,Hz$. The -3dB bandwidth of the signal is ${(\nu/\sqrt{F_s})}^2\, rad/s$, that is also indicated in the figure.
+  #+name: avspec
+  #+attr_html: :width 50%
+  #+caption: Averaged excitation spectrum along with the theoretical spectrum  
+  [[file:./FIGS/B_AvSpec.png]]
++ Here is a single realization of the same signal. 
+  #+name: real
+  #+begin_figure
+  #+attr_html: :width 50%
+  #+caption: Single Realization of Excitation Signal
+  [[file:FIGS/B_NBsig.png]]  	   
+  #+end_figure
+** Stochastic Dynamics Overview + FPE
++ Consider a first order dynamical system of the form,
+  $$ \dot{x}^{(n)} = f(t,x) + h(t,x)\dot{w}^{(n)(t)}. $$
++ We are interested in the case when the excitation term $w^{(n)}(t)$ is an *approximation of a stochastic process* where $n$ (sampling rate) is chosen such that it converges to the unit Wiener process, $w(t)$, as $n\to \infty$.
++ Ref. [cite:@eugeneRelationOrdinaryStochastic1965] showed that this converges, as $n\to\infty$, to the Itô SDE given by,
+  $$ dx_t = \frac{1}{F_s} \left(f(t,x_t)+\frac{1}{2F_s} \nabla_x h(t,x_t) h(t,x_t)\right) dt + \frac{1}{F_s} h(t,x_t)dW_t. $$
+  + In tensor notation, this is,
+    $$ {dx_t}_i = \frac{1}{F_s}\left( f_i(t,x_t) + \frac{1}{2F_s} \frac{\partial
+        h_i(t,x_t)}{\partial x_j}h_j(t,x_t)\right) dt + \frac{1}{F_s}h_i(t,x_t)
+    dW_t $$ 
++ This is rewritten (for convenience) as
+  $$ dx_t = \mu(t,x_t)dt + \sigma(t,x_t)dW, $$
+  where $\mu,\sigma:\mathbb{R}\times\mathbb{R}^d\to \mathbb{R}^d$, with $d$ being the number of states $x$.
++ The diffusion of probability of this SDE is governed by the Fokker-Planck Equation (FPE) or Fokker-Planck-Kolmogorov forward equation,
+  $$ \dot{p} + J_{i,i}=0,\,\text{with }J_i=\mu_ip-\frac{1}{2}(\sigma_i\sigma_j
+  p)_{,j},\,\text{such that, }\int_{\mathcal{D}}p=1, $$
+  where $\mathcal{D}$ is the domain of $x_t$.
++ $p(x)$ is the *probability density* and $J_i(x)$ is the *probability flux*.
++ Two kinds of boundary conditions (on faces) are possible for the PDE:
+  1. /Absorbing/: $p=0$.
+  2. /Reflecting/: $J_i n_i=0$
+
+*** Weak form of the FPE
++ The weak form of the FPE is written as follows, denoting the domain by $\mathcal{D}$ and using a trial function $g:\mathcal{D}\to\mathcal{H}$ (with $\mathcal{H}$ satisfying Dirichlet B.C.s),
+  \begin{align*}
+    G(g,p) &= \int_{\mathcal{D}} g \dot{p} + \int_{\mathcal{D}} gJ_{i,i}\\
+           &= \int_{\mathcal{D}} g \dot{p} - \int_{\mathcal{D}} g_{,i}J_i + \int_{\partial \mathcal{D}} g J_in_i,
+  \end{align*}
+  where $\partial \mathcal{D}$ denotes the boundary and $n_i$ denotes the relevant boundary normal.
+  + The symbol $\int_{\mathcal{D}} g p$ denotes some inner product defined over the domain $\mathcal{D}$.
++ On /absorbing/ boundaries, $g$ will be chosen to be 0 (since $p=0$), so the boundary term will be zero.
++ On /reflecting/ boundaries, the probability flux, $J_i n_i$, will be 0, so here, too, the boundary term cancels out.
++ Using a discretization for $p$ in the form,
+  $$ p = \mathbf{N}_k(x) \hat{p}_k(t), $$
+  and applying a Galerkin projection (choosing $N_k(x)$ as $g(x)$) yields the following matrix form of the governing equations
+  $$ \left[\int_\mathcal{D} \mathbf{N}_k \mathbf{N}_l\right] \hat{p}_l - \left[\int_{\mathcal{D}}
+  \mathbf{N}_{k,i}(\mu_i-\frac{1}{2}(\sigma_i\sigma_j)_{,j}) \mathbf{N}_l -
+  \frac{1}{2} \int_{\mathcal{D}} \mathbf{N}_{k,i} (\sigma_i\sigma_j) \mathbf{N}_{l,j}\right]
+  \hat{p} = 0. $$
++ The probability constraint can be written as $\left( \int_{\mathcal{D}}\mathbf{N}_k \right) \hat{p} = 1$.
++ The above presents a homogeneous system of ODE written as
+  $$ \mathbf{M} \dot{\hat{p}} - \mathbf{K} \hat{p} = 0,\,\text{s.t., }
+  T \hat{p}=1. $$
++ *Steady-solutions may be obtained using eigenanalysis of the GEVP $\left(\mathbf{K}-\lambda\mathbf{M}\right) \phi = 0$*
++ The other approaches in the literature include [cite:@naessEfficientPathIntegration2000a; @huStationaryResponseStrongly2012a]
++ Assessing the leading eigenpair, two cases arise:
+  + $\lambda_1=0$: Corresponds to a *Stationary Process* at steady-state..
+  + $\Re\{\lambda_1\}=0,\,\Im\{\lambda_1\}\neq0$: Corresponds to a *Periodic random process* at steady-state.
+
+** Slow-Flow Amplitude-Phase Dynamics
++ The modal equations of motion of a nonlinear oscillator can be expressed as,
+  $$ \ddot{x} + 2\zeta\omega_0 \dot{x} + \omega_0^2 x = \frac{F}{2} e^{j\sigma} + c.c., $$
+  where $\zeta,\, \omega_0$, and $F$ are real-valued functions of a slowly-evolving amplitude $q$.
+  + In the MDOF nonlinear context, NMA provides $\zeta$(q), $\omega_0(q)$, and $\psi(q)$.
+  + The excitation can be expressed as $F(q) = |\psi(q)^H f|$, where $f$ is the forcing vector of the system.
+  + The absolute of the $\psi^H f$ quantity can be considered w.l.o.g. since $\sigma$ can always be chosen to offset the phase of this complex quantity.
++ We have already seen that the dynamics of the slow-flow quantities can be derived using either
+  + *the method of multiple scales*, which starts from
+    $$ \ddot{x} + \textcolor{red}{\epsilon} 2\zeta\omega_0 \dot{x} + \omega_0^2 x =
+    \textcolor{red}{\epsilon} \frac{F}{2} e^{j\sigma}+c.c.,\,\text{with }
+    d\sigma=\omega_0 dt+\textcolor{red}{\epsilon}((\Omega-\omega_0)dt+\nu dW ), \text{, or} $$
+  + *the enriched MMS*, which starts from
+    $$ \ddot{x} + \textcolor{red}{p} 2\zeta\omega_0 \dot{x} + \Omega^2 x +
+    \textcolor{red}{p} ((\omega_0^2-\Omega^2) x) = \textcolor{red}{p} \frac{F}{2}
+    e^{j\sigma}+c.c.,\text{ with, } d\sigma = \Omega dt + \textcolor{red}{p}(\nu dW).$$
++ The final equations in general, can be written in the form
+  $$ \begin{bmatrix} dq\\ d\beta \end{bmatrix} = \begin{bmatrix} \mu_1(q,\beta)\\
+    \mu_2(q,\beta) \end{bmatrix} + \begin{bmatrix} \sigma_1(q,\beta)\\
+      \sigma_2(q,\beta)\end{bmatrix} dW. $$
++ The FPE is written as above, in the semi-periodic 2D domain $\mathcal{D}=\{x_1\in\mathbb{R}^+,\, x_2\in]-\pi,\pi[\}$.
++ The periodic boundary conditons over $x_2=\pm\pi$ also make the boundary terms in the weak form vanish.
++ Four different cases will be considered for the studies:
+  |----+---------+---------------------------------------------------------|
+  | 1. | *MMS1*  | MMS Truncated up to $\mathcal{O}(\textcolor{red}{\epsilon})$   |
+  | 2. | *MMS2*  | MMS Truncated up to $\mathcal{O}(\textcolor{red}{\epsilon}^2)$  |
+  | 3. | *EMMS1* | EMMS Truncated up to $\mathcal{O}(\textcolor{red}{p})$  |
+  |    |         | (Same as CXA)                                           |
+  | 4. | *EMMS2* | EMMS Truncated up to $\mathcal{O}(\textcolor{red}{p}^2)$ |
+  |----+---------+---------------------------------------------------------|
++ The practical relevance of the conceptual difference of $MMS$ and $EMMS/CXA$ remains to be seen.
+  
+*** Validation on Linear System Dynamics
++ For Linear systems ($\zeta, \omega_0, F$ taken to be constants), the slow-flow expressions turn out to be,
+  + *MMS*:
+    \begin{align*}
+      \dfrac{d}{dt} \begin{bmatrix} q\\\\\beta \end{bmatrix} =
+      \left(\textcolor{red}{\epsilon} \begin{bmatrix} -\zeta \omega_0 q - \dfrac{F\sin
+        \beta}{2\omega_0}\\\\-(\Omega-\omega_0)-\dfrac{F\cos \beta}{2\omega_0q} \end{bmatrix} +
+      \textcolor{red}{\epsilon^2} \begin{bmatrix}\dfrac{F\zeta \cos \beta}{4\omega_0} +
+        (\Omega-\omega_0)\dfrac{F\sin \beta}{4\omega_0^2}\\\\ -\dfrac{\zeta^2\omega_0}{2} - \dfrac{F\zeta\sin
+        \beta}{4\omega_0q} + (\Omega-\omega_0)\dfrac{F\cos \beta}{4\omega_0^2q} \end{bmatrix}\right) +
+      \nu \left(\textcolor{red}{\epsilon} \begin{bmatrix}0\\\\ -1\end{bmatrix} +
+      \textcolor{red}{\epsilon^2} \begin{bmatrix}\dfrac{F\sin \beta}{4\omega_0^2}\\\\
+        \dfrac{F\cos \beta}{4\omega_0^2q}\end{bmatrix}\right) \dot{W}(t) -
+      \cancel{\left(\textcolor{red}{\epsilon^2} \frac{d\sigma}{dT_2}\right)}
+    \end{align*}
+    + Phase:
+      $$ \sigma = \omega_0 t + \textcolor{red}{\epsilon}(\Omega-\omega_0)t + \textcolor{red}{\epsilon} \nu W(t) $$
+  + *EMMS*:
+    \begin{align*}
+      \dfrac{d}{dt} \begin{bmatrix} q\\\\\beta \end{bmatrix} =
+      \left(\textcolor{red}{p} \begin{bmatrix} -\zeta \omega_0q - \dfrac{F\sin
+        \beta}{2\Omega}\\\\ -\dfrac{\Omega^2-\omega_0^2}{2\Omega}-\dfrac{F\cos \beta}{2\Omega
+        q}\end{bmatrix} + \textcolor{red}{p^2} \begin{bmatrix} \dfrac{F\zeta
+          \omega_0\cos \beta}{4\Omega^2}-(\Omega^2-\omega_0^2)\dfrac{F\sin \beta}{8\Omega^3}\\\\
+          -\dfrac{(\Omega^2-\omega_0^2)^2}{8\Omega^3}-\dfrac{\zeta^2\omega_0^2}{2\Omega}-\dfrac{F\zeta\omega_0\sin
+          \beta}{4\Omega^2q}-(\Omega^2-\omega_0^2)\dfrac{F\cos \beta}{8\Omega^3q} \end{bmatrix}\right)
+    + \left( \textcolor{red}{p} \begin{bmatrix} 0\\\\ -1\end{bmatrix} +
+      \textcolor{red}{p^2} \begin{bmatrix} \dfrac{F\sin \beta}{4\Omega^2}\\\\
+        \dfrac{F\cos \beta}{4\Omega^2q}\end{bmatrix} \right) \dot{W}(t) -
+      \cancel{\left(\textcolor{red}{p^2} \dfrac{d\sigma}{dT_2}\right)}
+    \end{align*}
+    + Phase:
+      $$ \sigma = \Omega t + \textcolor{red}{p} \nu W(t) $$
++ In both of these, the equations are expresed in the format shown above and the Wong and Zakai approach [cite:@eugeneRelationOrdinaryStochastic1965] is used to obtain the corresponding SDE.
++ The SDE is then used to derive the Fokker-Planck Equation, that is used for the comparisons.
++ The following properties are assumed for the linear parameters:
+  $$ \boxed{\omega_0=120\,rad/s,\, \zeta=0.002,\, F=2\,N,\, \Omega=100\,rad/s,\, \nu=5\sqrt{F_s}\implies \Omega _{bw}=25\,rad/s.} $$
++ Here is a summary plot. Deterministically, the MMS approaches seem to match the 
+  #+attr_html: :class fullwidth
+  #+begin_figure
+  #+attr_html: :width 100%
+  #+caption: Slow-flow envelopes against the transient response
+  [[file:FIGS/C_linsystry0.png]]
+  #+end_figure
+  # #+attr_html: :width 500px
+  #+begin_figure
+  #+attr_html: :width 80%
+  #+caption: A zoomed in view of the amplitude responses
+  file:FIGS/C_ampzoomin.png
+  #+end_figure
++ It can be seen that the CXA ($\mathcal{O}(\textcolor{red}{\epsilon})$ EMMS) seems to match the _*true amplitude mean*_ much more closely than the others.
++ Looking closer seems to show that although the others track the true envelope closer, they seem to have some bias, while CXA does not. The MMS approaches, however, show better performance in standard deviation. 
+  #+attr_html: :class fullwidth
+  #+begin_figure
+  #+attr_html: :width 100%
+  #+caption: Performance of the different slow flow equations
+  [[file:FIGS/C_invperf.png]]
+  #+end_figure
+  #+begin_center 
+  _*FPE Results*_
+  #+end_center
++ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution is written as $p = \eta_i \phi_i e^{-\lambda_i t}$). 
+  #+attr_html: :width 100%
+  #+caption: Eigenspectra of the FPK Pencils
+  [[file:FIGS/F_EigSpec.png]]
++ In each case, the leading eigenvalue is numerically zero, indicating the existence of a steady-state.
++ The following are the PDFs computed using randomized transient simulations along with the PDF. The PDFs look to be _*nominally similar*_ for this case.
++ I haven't implemented a 2-parameter KS-test to be more rigorous, but this seems to be well-established and doable.
+**** $\mathcal{O}(\textcolor{red}{\epsilon})$ MMS
+#+begin_export html
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_mms1.png" alt="F_LTHIST_mms1.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_mms1.png" alt="F_LTHIST_mms1.png" width="100%">
+  </figure>  
+</div>
+#+end_export
+
+# #+attr_html: :class fullwidth
+# #+begin_figure
+# #+attr_html: :width 50%
+# [[./FIGS/F_LTHIST_mms1.png]]
+# #+attr_html: :width 50%
+# [[./FIGS/F_LDENS_mms1.png]]
+# #+end_figure
+**** $\mathcal{O}(\textcolor{red}{\epsilon^2})$ MMS
+#+begin_export html
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_mms2.png" alt="F_LTHIST_mms2.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_mms2.png" alt="F_LTHIST_mms2.png" width="100%">
+  </figure>  
+</div>
+#+end_export
+
+# #+attr_html: :class quiltish
+# #+begin_figure
+# [[./FIGS/F_LTHIST_mms2.png]]
+# [[./FIGS/F_LDENS_mms2.png]]
+# #+end_figure
+**** CXA ($\mathcal{O}(\textcolor{red}{p})$ EMMS)
+#+begin_export html
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_emms1.png" alt="F_LTHIST_emms1.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_emms1.png" alt="F_LTHIST_emms1.png" width="100%">
+  </figure>  
+</div>
+#+end_export
+
+# #+attr_html: :class quiltish
+# #+begin_figure
+# [[./FIGS/F_LTHIST_emms1.png]]
+# [[./FIGS/F_LDENS_emms1.png]]
+# #+end_figure
+**** $\mathcal{O}(\textcolor{red}{p^2})$ EMMS
+#+begin_export html
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_emms2.png" alt="F_LTHIST_emms2.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_emms2.png" alt="F_LTHIST_emms2.png" width="100%">
+  </figure>  
+</div>
+#+end_export
+
+# #+attr_html: :class quiltish
+# #+begin_figure
+# [[./FIGS/F_LTHIST_emms2.png]]
+# [[./FIGS/F_LDENS_emms2.png]]
+# #+end_figure
+** Questions on Path Forward
++ We now have the capability of repeating this analysis for any system whose nonlinear modal characteristics are known.
++ I have planned to use _*EPMC results from the RuBber Beam*_ to generate nonlinear results.
++ Any specific cases I should focus on?
++ We could have an _*experimental campaign*_ focused on
+  + Obtaining backbones with PLL -> FPE pdf predictions
+  + Conducting phase-noise excitation and validating
+  + The same backbones could also be used for quasi-periodic synthesis.
+*** Something that caught my eye: "Stochastic jump" phenomena [cite:@huStationaryResponseStrongly2012a]
+#+begin_export html
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/Hu2012_1.png" alt="Hu2012_1.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/Hu2012_2.png" alt="Hu2012_2.png" width="100%">
+  </figure>  
+</div>
+#+end_export
+** Meeting Notes
+1. Cases with co-existing stable solutions are certainly more interesting.
+   + Doing an example with a reasonably soft impact might be interesting.
+2. What are the kinds of analysis we can do once we have the density distribution?
+   + For multi-valued response regimes, we could compute transition likelihoods.
+3. We should move on to multi-input cases, where there is *spatially correlated* random input.
+   + Maybe we can model these as $\frac{F_1}{2}e^{i\sigma_1}+\frac{F_2}{2}e^{i\sigma_2}+\dots$ ?
+   + Using the FPE in this context really has lots of relevance since doing Monte-Carlo here is quite infeasible due to the potentially large number of independent random variables.
+   + The *vortex-induced cable vibration problem* that Tobi worked on presents such a case. Could be interesting to have a look at how the excitation is modeled. 
+4. It is important that the example we choose shows that we NEED to model it is a non-linear system (statistical linearization would lead to spurious results). This would really drive home the point of the necessity of this formulation.
+   + An added aspect is that using NMA backbones allow us to use it for MDOF problems, where, already, computational savings are possible. 
+
+* Week 2
+** Validation on Nonlinear Systems
++ The implementation for the most general case with support for nonlinear MDOF oscillators specified through $\omega_0(q), \zeta(q), \psi(q)$ is complete.
++ I only have results for an SDOF oscillator here, more soon.
++ The dependencies of the second order formulae on the different terms are tabulated below:
+  | Formula                                | $\omega\quad$ | $\zeta\quad$ | $\psi\quad$ | $\omega'\quad$ | $\zeta'\quad$ | $\psi'\quad$ | $\omega''\quad$ | $\zeta''\quad$ | $\psi''\quad$ |
+  |----------------------------------------+----------+----------+----------+-----------+-----------+-----------+------------+------------+------------|
+  | $\mathcal{O}(\textcolor{red}{\epsilon})$ MMS  | \check        | \check        | \check        | \check         |           |           |            |            |            |
+  | $\mathcal{O}(\textcolor{red}{\epsilon^2})$ MMS | \check        | \check        | \check        | \check         | \check         | \check         | \check          |            |            |
+  | $\mathcal{O}(\textcolor{red}{p})$ EMMS | \check        | \check        | \check        |           |           |           |            |            |            |
+  | $\mathcal{O}(\textcolor{red}{p^2})$ MMS | \check        | \check        | \check        | \check         | \check         | \check         |            |            |            |
+*** SDOF Duffing Oscillator
++ Considered EOM:
+  $$ \ddot{x} + 2\zeta_n\omega_n \dot{x}+\omega_n^2x + \alpha x^3=F\cos\sigma, $$
+  with parameters,
+  $$ \omega_0=1\,rad/s,\quad \zeta_n=10^{-3},\quad \alpha=0.2,\quad F=0.07\,N. $$
++ Used EPMC to compute the backbones first
+  #+attr_html: :class fullwidth
+  #+begin_figure 
+  #+caption: EPMC Backbone for the SDOF Duffing oscillator
+  [[file:FIGS/G1_SDOFEPMC_duffing.png]]
+  #+end_figure
++ This is next used to obtain the PDF of the slow flow system using the four different formulations. Here is a summary.
+  #+begin_export html
+  <div class="row fullwidth">
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_duffing_mms1.png" alt="G3_SDOFFPEfr_duffing_mms1.png" width="100%">
+      <figcaption class="colcap">MMS1</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_duffing_mms2.png" alt="G3_SDOFFPEfr_duffing_mms2.png" width="100%">
+      <figcaption class="colcap">MMS2</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_duffing_emms1.png" alt="G3_SDOFFPEfr_duffing_emms1.png" width="100%">
+      <figcaption class="colcap">CXA (EMMS1)</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_duffing_emms2.png" alt="G3_SDOFFPEfr_duffing_emms2.png" width="100%">
+      <figcaption class="colcap">EMMS2</figcaption>
+    </figure>    
+  </div>
+  #+end_export
++ It looks like CXA ($\mathcal{O}(\textcolor{red}{p})$ EMMS) seems to underpredict the density of the higher amplitude.
+**** $\mathcal{O}(\textcolor{red}{\epsilon})$ MMS
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Duffing Oscillator with MMS1
+[[file:FIGS/G3_SDOFFPE_duffing_mms1.png]]
+#+end_figure
+**** $\mathcal{O}(\textcolor{red}{\epsilon^2})$ MMS
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Duffing Oscillator with MMS2
+[[file:FIGS/G3_SDOFFPE_duffing_mms2.png]]
+#+end_figure
+**** CXA ($\mathcal{O}(\textcolor{red}{p})$ EMMS)
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Duffing Oscillator with CXA (EMMS1)
+[[file:FIGS/G3_SDOFFPE_duffing_emms1.png]]
+#+end_figure
+**** $\mathcal{O}(\textcolor{red}{p^2})$ EMMS
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Duffing Oscillator with CXA (EMMS2)
+[[file:FIGS/G3_SDOFFPE_duffing_emms2.png]]
+#+end_figure
+*** SDOF Oscillator with Friction
++ Considered EOM:
+  $$ \ddot{x} + 2\zeta_n\omega_n \dot{x}+\omega_n^2x + f_{jenk}(x; k_t, \mu N)=F\cos\sigma, $$
+  with parameters,
+  $$ \omega_0=1\,rad/s,\quad \zeta_n=10^{-3},\quad k_t=3\,N/m,\quad \mu N=0.5\,N,\quad F=0.2\,N. $$
++ Used EPMC to compute the backbones first
+  #+attr_html: :class fullwidth
+  #+begin_figure 
+  #+caption: EPMC Backbone for the SDOF Duffing oscillator
+  [[file:FIGS/G1_SDOFEPMC_jenkins.png]]
+  #+end_figure
++ This is next used to obtain the PDF of the slow flow system using the four different formulations. Here is a summary.
+  #+begin_export html
+  <div class="row fullwidth">
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_jenkins_mms1.png" alt="G3_SDOFFPEfr_jenkins_mms1.png" width="100%">
+      <figcaption class="colcap">MMS1</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_jenkins_mms2.png" alt="G3_SDOFFPEfr_jenkins_mms2.png" width="100%">
+      <figcaption class="colcap">MMS2</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_jenkins_emms1.png" alt="G3_SDOFFPEfr_jenkins_emms1.png" width="100%">
+      <figcaption class="colcap">CXA (EMMS1)</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SDOFFPEfr_jenkins_emms2.png" alt="G3_SDOFFPEfr_jenkins_emms2.png" width="100%">
+      <figcaption class="colcap">EMMS2</figcaption>
+    </figure>    
+  </div>
+  #+end_export
+  
++ Both the first order approximations seem to result in spurious oscillations in the predicted PDF. The second order forms seem to find it easier.
+  Perhaps this is related to the interpolated approximation of the non-smooth backbone?
+**** $\mathcal{O}(\textcolor{red}{\epsilon})$ MMS
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Frictional Oscillator with MMS1
+[[file:FIGS/G3_SDOFFPE_jenkins_mms1.png]]
+#+end_figure
+**** $\mathcal{O}(\textcolor{red}{\epsilon^2})$ MMS
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Frictional Oscillator with MMS2
+[[file:FIGS/G3_SDOFFPE_jenkins_mms2.png]]
+#+end_figure
+**** CXA ($\mathcal{O}(\textcolor{red}{p})$ EMMS)
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Frictional Oscillator with CXA (EMMS1)
+[[file:FIGS/G3_SDOFFPE_jenkins_emms1.png]]
+#+end_figure
+**** $\mathcal{O}(\textcolor{red}{p^2})$ EMMS
+#+attr_html: :class fullwidth
+#+begin_figure 
+#+caption: FPE Results for the Frictional Oscillator with CXA (EMMS2)
+[[file:FIGS/G3_SDOFFPE_jenkins_emms2.png]]
+#+end_figure
+*** Pointers from Tobi on Experimentation
++ If we have a Gaussian process with a given target PSD that needs to be achieved for the force, this can be done iteratively.
++ What we have here is,
+  + PSD:
+    $$ \Phi_{FF}(\omega) = \frac{\lambda^2\overline{\nu}^2}{4\pi} \frac{\overline{\Omega}^2+\frac{\overline{\nu}^4}{4}+\omega^2}{(\Omega^2+\frac{\overline{\nu}^4}{4}-\omega^2)^2+\omega^2\overline{\nu}^4}\text{, with } \overline{\nu}=\frac{\nu}{\sqrt{F_s}}.  $$
+  + PDF:
+    \begin{equation*}
+      p_F(f) = \begin{cases} \frac{1}{\pi\sqrt{(\Omega^2-f^2)}} & |f|< F\\
+        0 & \text{otherwise} \end{cases}
+    \end{equation*}
++ If we generated a voltage signal $v(t) = V\cos\sigma$ with random phase $\sigma$, we don't have enough degrees of freedom to adjust the force spectrum.
++ We discussed 2 alternatives:
+**** Set $\sigma=0$ and make $F$ a stationary Gaussian process with desired spectrum
++ This allows Tobi to apply techniques he is already familiar with
++ The excitation is not phase-noise excitation
++ Amplitude-phase equations are still applicable but the will look different
+**** Try a novel iterative approach
++ We start with providing a desired PSD to the excitation
++ We take the output voltage in time domain and tranform it to the desired PDF
++ We then check the output force spectrum and adjust the initial PSD accordingly
++ Tobi is not sure if this has been tried in the literature, said he'll try to find papers
++ This will be a new approach from the experimental side.
+*** Things to try
++ Linear interpolation
++ DG for discretization 
+* References
+#+print_bibliography: References
+
+#+begin_export html
+<script type="text/javascript" src="./collapsec.js"></script>
+<style>  
+  #fixbut {
+      position: fixed;
+      top: 10px; /* Adjust the top position as needed */
+      right: 10px; /* Adjust the right position as needed */
+      padding: 10px;
+      background-color: #fffff8;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  #fixbut2 {
+      position: fixed;
+      top: 10px; /* Adjust the top position as needed */
+      left: 10px; /* Adjust the right position as needed */
+      padding: 10px;
+      background-color: #fffff8;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  .column {
+    float: left;
+    width: 50%;
+  }
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .column4 {
+    float: left;
+    width: 25%;
+    text-align: center;
+  }
+
+  .colcap {
+  text-align: center;
+  }
+</style>
+#+end_export
+
+#+begin_src inline-js
+  togglevisib();
+  var art = document.getElementsByTagName('article')[0];
+  var std = 'dark';
+  var btnd = document.getElementsByClassName("tgld");
+  var als = document.getElementsByTagName('a');
+  var alss = Array.from(als).concat(Array.from(
+      document.getElementsByClassName('tufte-underline'))).concat(Array.from(
+          document.getElementsByClassName('hover-tufte-underline:hover')));
+
+  function toggledark(e) {
+      document.body.style.backgroundColor=(std=='dark')?'#fffff8':'#151515';
+      document.body.style.color=(std=='dark')?'#111':'#ddd';
+      btnd[0].value=std+' mode';
+      btnd[0].style.backgroundColor=(std=='dark')?'#111':'#ddd';
+      btnd[0].style.color=(std=='dark')?'#fffff8':'#151515';
+      btn[0].style.backgroundColor=(std=='dark')?'#111':'#ddd';
+      btn[0].style.color=(std=='dark')?'#fffff8':'#151515';
+      if (std=='dark') for (var i = 0; i < als.length; i++)
+          als[i].style.textShadow='0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8';	
+      else for (var i = 0; i < als.length; i++)
+          als[i].style.textShadow='0.03em 0 #151515, -0.03em 0 #151515, 0 0.03em #151515, 0 -0.03em #151515, 0.06em 0 #151515, -0.06em 0 #151515, 0.09em 0 #151515, -0.09em 0 #151515, 0.12em 0 #151515, -0.12em 0 #151515, 0.15em 0 #151515, -0.15em 0 #151515';
+      std=(std=='dark')?'light':'dark';
+  }
+
+  btnd[0].addEventListener("click", toggledark);
+  toggledark();
+
+  document.addEventListener('keypress', function(e) {if (e.which==100) {toggledark();}})
+#+end_src

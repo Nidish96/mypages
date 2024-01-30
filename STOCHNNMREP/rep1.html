@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2024-01-29 Mon 21:32 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Implementation and Validation of the Fokker-Planck Equation for Narrow-band excitation</title>
+<meta name="author" content="Nidish Balaji" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<script type="text/javascript" src="https://livejs.com/live.js"></script>
+<link rel="stylesheet" href="./org-info.css" type="text/css"/>
+<link rel="stylesheet" href="./tufte.css" type="text/css"/>
+<link rel="stylesheet" href="./ox-tufte.css" type="text/css" />
+<style> .quiltish img { max-height: 400px; min-height: 100px; max-width: 100%;  } </style>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<article id="content" class="content">
+<header>
+<h1 class="title">Implementation and Validation of the Fokker-Planck Equation for Narrow-band excitation</h1>
+</header><input id="fixbut" type="button" value="hide all" class="tglv" class="right">
+<input id="fixbut2" type="button" value="dark mode" class="tgld" class="right">
+
+<section id="outline-container-orgc3e7ee9" class="outline-2">
+<h2 id="orgc3e7ee9"><span class="section-number-2">1.</span> Week 1</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgfe43e43" class="outline-3">
+<h3 id="orgfe43e43"><span class="section-number-3">1.1.</span> Excitation Design (from <a href="#citeproc_bib_item_1">[1]</a>)</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>The excitation is designed through the stochastically defined phase \(\sigma(t)\),
+\[ d\sigma = \frac{\Omega}{F_s} dt + \frac{\nu}{F_s} dW, \]
+where \(W(t)\) is the unit Wiener process (\(dW=\eta\sim\mathcal{N}(0,1)\)), and \(F_s\) is the sampling rate (in Hz).</li>
+<li>The excitation signal is then written as
+\[ f(t) = F \cos\sigma(t), \]
+where \(F\) is the excitation amplitude.</li>
+<li>Theoretically, the spectrum this leads to is
+\[ \Phi_{FF}(\omega) = \frac{\lambda^2\overline{\nu}^2}{4\pi}
+  \frac{\overline{\Omega}^2+\frac{\overline{\nu}^4}{4}+\omega^2}{(\Omega^2+\frac{\overline{\nu}^4}{4}-\omega^2)^2+\omega^2\overline{\nu}^4}\text{,
+    with } \overline{\nu}=\frac{\nu}{\sqrt{F_s}}.  \]</li>
+<li><p>
+Here is an example of the averaged spectrum with \(\Omega=100\,rad/s\), \(\nu=5\sqrt{F_s}\,rad/s\), and \(F_s=1024\,Hz\). The -3dB bandwidth of the signal is \({(\nu/\sqrt{F_s})}^2\, rad/s\), that is also indicated in the figure.
+</p>
+
+<figure id="avspec">
+<img src="./FIGS/B_AvSpec.png" alt="B_AvSpec.png" width="50%">
+
+<figcaption><span class="figure-number">Figure 1: </span>Averaged excitation spectrum along with the theoretical spectrum</figcaption>
+</figure></li>
+<li><p>
+Here is a single realization of the same signal. 
+</p>
+<figure id="real">
+
+<figure id="orgd00f35e">
+<img src="FIGS/B_NBsig.png" alt="B_NBsig.png" width="50%">      
+
+<figcaption><span class="figure-number">Figure 2: </span>Single Realization of Excitation Signal</figcaption>
+</figure>
+</figure></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7e0528c" class="outline-3">
+<h3 id="org7e0528c"><span class="section-number-3">1.2.</span> Stochastic Dynamics Overview + FPE</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Consider a first order dynamical system of the form,
+\[ \dot{x}^{(n)} = f(t,x) + h(t,x)\dot{w}^{(n)(t)}. \]</li>
+<li>We are interested in the case when the excitation term \(w^{(n)}(t)\) is an <b>approximation of a stochastic process</b> where \(n\) (sampling rate) is chosen such that it converges to the unit Wiener process, \(w(t)\), as \(n\to \infty\).</li>
+<li>Ref. <a href="#citeproc_bib_item_2">[2]</a> showed that this converges, as \(n\to\infty\), to the Itô SDE given by,
+\[ dx_t = \frac{1}{F_s} \left(f(t,x_t)+\frac{1}{2F_s} \nabla_x h(t,x_t) h(t,x_t)\right) dt + \frac{1}{F_s} h(t,x_t)dW_t. \]
+<ul class="org-ul">
+<li>In tensor notation, this is,
+\[ {dx_t}_i = \frac{1}{F_s}\left( f_i(t,x_t) + \frac{1}{2F_s} \frac{\partial
+        h_i(t,x_t)}{\partial x_j}h_j(t,x_t)\right) dt + \frac{1}{F_s}h_i(t,x_t)
+    dW_t \]</li>
+</ul></li>
+<li>This is rewritten (for convenience) as
+\[ dx_t = \mu(t,x_t)dt + \sigma(t,x_t)dW, \]
+where \(\mu,\sigma:\mathbb{R}\times\mathbb{R}^d\to \mathbb{R}^d\), with \(d\) being the number of states \(x\).</li>
+<li>The diffusion of probability of this SDE is governed by the Fokker-Planck Equation (FPE) or Fokker-Planck-Kolmogorov forward equation,
+\[ \dot{p} + J_{i,i}=0,\,\text{with }J_i=\mu_ip-\frac{1}{2}(\sigma_i\sigma_j
+  p)_{,j},\,\text{such that, }\int_{\mathcal{D}}p=1, \]
+where \(\mathcal{D}\) is the domain of \(x_t\).</li>
+<li>\(p(x)\) is the <b>probability density</b> and \(J_i(x)\) is the <b>probability flux</b>.</li>
+<li>Two kinds of boundary conditions (on faces) are possible for the PDE:
+<ol class="org-ol">
+<li><i>Absorbing</i>: \(p=0\).</li>
+<li><i>Reflecting</i>: \(J_i n_i=0\)</li>
+</ol></li>
+</ul>
+</div>
+
+<div id="outline-container-org66fac4c" class="outline-4">
+<h4 id="org66fac4c"><span class="section-number-4">1.2.1.</span> Weak form of the FPE</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li><p>
+The weak form of the FPE is written as follows, denoting the domain by \(\mathcal{D}\) and using a trial function \(g:\mathcal{D}\to\mathcal{H}\) (with \(\mathcal{H}\) satisfying Dirichlet B.C.s),
+</p>
+\begin{align*}
+  G(g,p) &= \int_{\mathcal{D}} g \dot{p} + \int_{\mathcal{D}} gJ_{i,i}\\
+         &= \int_{\mathcal{D}} g \dot{p} - \int_{\mathcal{D}} g_{,i}J_i + \int_{\partial \mathcal{D}} g J_in_i,
+\end{align*}
+<p>
+where \(\partial \mathcal{D}\) denotes the boundary and \(n_i\) denotes the relevant boundary normal.
+</p>
+<ul class="org-ul">
+<li>The symbol \(\int_{\mathcal{D}} g p\) denotes some inner product defined over the domain \(\mathcal{D}\).</li>
+</ul></li>
+<li>On <i>absorbing</i> boundaries, \(g\) will be chosen to be 0 (since \(p=0\)), so the boundary term will be zero.</li>
+<li>On <i>reflecting</i> boundaries, the probability flux, \(J_i n_i\), will be 0, so here, too, the boundary term cancels out.</li>
+<li>Using a discretization for \(p\) in the form,
+\[ p = \mathbf{N}_k(x) \hat{p}_k(t), \]
+and applying a Galerkin projection (choosing \(N_k(x)\) as \(g(x)\)) yields the following matrix form of the governing equations
+\[ \left[\int_\mathcal{D} \mathbf{N}_k \mathbf{N}_l\right] \hat{p}_l - \left[\int_{\mathcal{D}}
+  \mathbf{N}_{k,i}(\mu_i-\frac{1}{2}(\sigma_i\sigma_j)_{,j}) \mathbf{N}_l -
+  \frac{1}{2} \int_{\mathcal{D}} \mathbf{N}_{k,i} (\sigma_i\sigma_j) \mathbf{N}_{l,j}\right]
+  \hat{p} = 0. \]</li>
+<li>The probability constraint can be written as \(\left( \int_{\mathcal{D}}\mathbf{N}_k \right) \hat{p} = 1\).</li>
+<li>The above presents a homogeneous system of ODE written as
+\[ \mathbf{M} \dot{\hat{p}} - \mathbf{K} \hat{p} = 0,\,\text{s.t., }
+  T \hat{p}=1. \]</li>
+<li><b>Steady-solutions may be obtained using eigenanalysis of the GEVP \(\left(\mathbf{K}-\lambda\mathbf{M}\right) \phi = 0\)</b></li>
+<li>The other approaches in the literature include <a href="#citeproc_bib_item_3">[3]</a>, <a href="#citeproc_bib_item_4">[4]</a></li>
+<li>Assessing the leading eigenpair, two cases arise:
+<ul class="org-ul">
+<li>\(\lambda_1=0\): Corresponds to a <b>Stationary Process</b> at steady-state..</li>
+<li>\(\Re\{\lambda_1\}=0,\,\Im\{\lambda_1\}\neq0\): Corresponds to a <b>Periodic random process</b> at steady-state.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgee540fa" class="outline-3">
+<h3 id="orgee540fa"><span class="section-number-3">1.3.</span> Slow-Flow Amplitude-Phase Dynamics</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>The modal equations of motion of a nonlinear oscillator can be expressed as,
+\[ \ddot{x} + 2\zeta\omega_0 \dot{x} + \omega_0^2 x = \frac{F}{2} e^{j\sigma} + c.c., \]
+where \(\zeta,\, \omega_0\), and \(F\) are real-valued functions of a slowly-evolving amplitude \(q\).
+<ul class="org-ul">
+<li>In the MDOF nonlinear context, NMA provides \(\zeta\)(q), \(\omega_0(q)\), and \(\psi(q)\).</li>
+<li>The excitation can be expressed as \(F(q) = |\psi(q)^H f|\), where \(f\) is the forcing vector of the system.</li>
+<li>The absolute of the \(\psi^H f\) quantity can be considered w.l.o.g. since \(\sigma\) can always be chosen to offset the phase of this complex quantity.</li>
+</ul></li>
+<li>We have already seen that the dynamics of the slow-flow quantities can be derived using either
+<ul class="org-ul">
+<li><b>the method of multiple scales</b>, which starts from
+\[ \ddot{x} + \textcolor{red}{\epsilon} 2\zeta\omega_0 \dot{x} + \omega_0^2 x =
+    \textcolor{red}{\epsilon} \frac{F}{2} e^{j\sigma}+c.c.,\,\text{with }
+    d\sigma=\omega_0 dt+\textcolor{red}{\epsilon}((\Omega-\omega_0)dt+\nu dW ), \text{, or} \]</li>
+<li><b>the enriched MMS</b>, which starts from
+\[ \ddot{x} + \textcolor{red}{p} 2\zeta\omega_0 \dot{x} + \Omega^2 x +
+    \textcolor{red}{p} ((\omega_0^2-\Omega^2) x) = \textcolor{red}{p} \frac{F}{2}
+    e^{j\sigma}+c.c.,\text{ with, } d\sigma = \Omega dt + \textcolor{red}{p}(\nu dW).\]</li>
+</ul></li>
+<li>The final equations in general, can be written in the form
+\[ \begin{bmatrix} dq\\ d\beta \end{bmatrix} = \begin{bmatrix} \mu_1(q,\beta)\\
+    \mu_2(q,\beta) \end{bmatrix} + \begin{bmatrix} \sigma_1(q,\beta)\\
+      \sigma_2(q,\beta)\end{bmatrix} dW. \]</li>
+<li>The FPE is written as above, in the semi-periodic 2D domain \(\mathcal{D}=\{x_1\in\mathbb{R}^+,\, x_2\in]-\pi,\pi[\}\).</li>
+<li>The periodic boundary conditons over \(x_2=\pm\pi\) also make the boundary terms in the weak form vanish.</li>
+<li><p>
+Four different cases will be considered for the studies:
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-right">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">1.</td>
+<td class="org-left"><b>MMS1</b></td>
+<td class="org-left">MMS Truncated up to \(\mathcal{O}(\textcolor{red}{\epsilon})\)</td>
+</tr>
+
+<tr>
+<td class="org-right">2.</td>
+<td class="org-left"><b>MMS2</b></td>
+<td class="org-left">MMS Truncated up to \(\mathcal{O}(\textcolor{red}{\epsilon}^2)\)</td>
+</tr>
+
+<tr>
+<td class="org-right">3.</td>
+<td class="org-left"><b>EMMS1</b></td>
+<td class="org-left">EMMS Truncated up to \(\mathcal{O}(\textcolor{red}{p})\)</td>
+</tr>
+
+<tr>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">(Same as CXA)</td>
+</tr>
+
+<tr>
+<td class="org-right">4.</td>
+<td class="org-left"><b>EMMS2</b></td>
+<td class="org-left">EMMS Truncated up to \(\mathcal{O}(\textcolor{red}{p}^2)\)</td>
+</tr>
+</tbody>
+</table></li>
+<li>The practical relevance of the conceptual difference of \(MMS\) and \(EMMS/CXA\) remains to be seen.</li>
+</ul>
+</div>
+
+<div id="outline-container-orga1be079" class="outline-4">
+<h4 id="orga1be079"><span class="section-number-4">1.3.1.</span> Validation on Linear System Dynamics</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<ul class="org-ul">
+<li>For Linear systems (\(\zeta, \omega_0, F\) taken to be constants), the slow-flow expressions turn out to be,
+<ul class="org-ul">
+<li><p>
+<b>MMS</b>:
+</p>
+\begin{align*}
+  \dfrac{d}{dt} \begin{bmatrix} q\\\\\beta \end{bmatrix} =
+  \left(\textcolor{red}{\epsilon} \begin{bmatrix} -\zeta \omega_0 q - \dfrac{F\sin
+    \beta}{2\omega_0}\\\\-(\Omega-\omega_0)-\dfrac{F\cos \beta}{2\omega_0q} \end{bmatrix} +
+  \textcolor{red}{\epsilon^2} \begin{bmatrix}\dfrac{F\zeta \cos \beta}{4\omega_0} +
+    (\Omega-\omega_0)\dfrac{F\sin \beta}{4\omega_0^2}\\\\ -\dfrac{\zeta^2\omega_0}{2} - \dfrac{F\zeta\sin
+    \beta}{4\omega_0q} + (\Omega-\omega_0)\dfrac{F\cos \beta}{4\omega_0^2q} \end{bmatrix}\right) +
+  \nu \left(\textcolor{red}{\epsilon} \begin{bmatrix}0\\\\ -1\end{bmatrix} +
+  \textcolor{red}{\epsilon^2} \begin{bmatrix}\dfrac{F\sin \beta}{4\omega_0^2}\\\\
+    \dfrac{F\cos \beta}{4\omega_0^2q}\end{bmatrix}\right) \dot{W}(t) -
+  \cancel{\left(\textcolor{red}{\epsilon^2} \frac{d\sigma}{dT_2}\right)}
+\end{align*}
+<ul class="org-ul">
+<li>Phase:
+\[ \sigma = \omega_0 t + \textcolor{red}{\epsilon}(\Omega-\omega_0)t + \textcolor{red}{\epsilon} \nu W(t) \]</li>
+</ul></li>
+<li><p>
+<b>EMMS</b>:
+</p>
+\begin{align*}
+  \dfrac{d}{dt} \begin{bmatrix} q\\\\\beta \end{bmatrix} =
+  \left(\textcolor{red}{p} \begin{bmatrix} -\zeta \omega_0q - \dfrac{F\sin
+    \beta}{2\Omega}\\\\ -\dfrac{\Omega^2-\omega_0^2}{2\Omega}-\dfrac{F\cos \beta}{2\Omega
+    q}\end{bmatrix} + \textcolor{red}{p^2} \begin{bmatrix} \dfrac{F\zeta
+      \omega_0\cos \beta}{4\Omega^2}-(\Omega^2-\omega_0^2)\dfrac{F\sin \beta}{8\Omega^3}\\\\
+      -\dfrac{(\Omega^2-\omega_0^2)^2}{8\Omega^3}-\dfrac{\zeta^2\omega_0^2}{2\Omega}-\dfrac{F\zeta\omega_0\sin
+      \beta}{4\Omega^2q}-(\Omega^2-\omega_0^2)\dfrac{F\cos \beta}{8\Omega^3q} \end{bmatrix}\right)
++ \left( \textcolor{red}{p} \begin{bmatrix} 0\\\\ -1\end{bmatrix} +
+  \textcolor{red}{p^2} \begin{bmatrix} \dfrac{F\sin \beta}{4\Omega^2}\\\\
+    \dfrac{F\cos \beta}{4\Omega^2q}\end{bmatrix} \right) \dot{W}(t) -
+  \cancel{\left(\textcolor{red}{p^2} \dfrac{d\sigma}{dT_2}\right)}
+\end{align*}
+<ul class="org-ul">
+<li>Phase:
+\[ \sigma = \Omega t + \textcolor{red}{p} \nu W(t) \]</li>
+</ul></li>
+</ul></li>
+<li>In both of these, the equations are expresed in the format shown above and the Wong and Zakai approach <a href="#citeproc_bib_item_2">[2]</a> is used to obtain the corresponding SDE.</li>
+<li>The SDE is then used to derive the Fokker-Planck Equation, that is used for the comparisons.</li>
+<li>The following properties are assumed for the linear parameters:
+\[ \boxed{\omega_0=120\,rad/s,\, \zeta=0.002,\, F=2\,N,\, \Omega=100\,rad/s,\, \nu=5\sqrt{F_s}\implies \Omega _{bw}=25\,rad/s.} \]</li>
+<li><p>
+Here is a summary plot. Deterministically, the MMS approaches seem to match the 
+</p>
+<figure class="fullwidth" id="org9305691">
+
+<figure id="org283ee86">
+<img src="FIGS/C_linsystry0.png" alt="C_linsystry0.png" width="100%">
+
+<figcaption><span class="figure-number">Figure 3: </span>Slow-flow envelopes against the transient response</figcaption>
+</figure>
+</figure>
+
+<figure id="org67b76ae">
+
+<figure id="org6380f92">
+<img src="FIGS/C_ampzoomin.png" alt="C_ampzoomin.png" width="80%">
+
+<figcaption><span class="figure-number">Figure 4: </span>A zoomed in view of the amplitude responses</figcaption>
+</figure>
+</figure></li>
+<li>It can be seen that the CXA (\(\mathcal{O}(\textcolor{red}{\epsilon})\) EMMS) seems to match the <span class="underline"><b>true amplitude mean</b></span> much more closely than the others.</li>
+<li><p>
+Looking closer seems to show that although the others track the true envelope closer, they seem to have some bias, while CXA does not. The MMS approaches, however, show better performance in standard deviation. 
+</p>
+<figure class="fullwidth" id="orge66aa57">
+
+<figure id="orgceb5752">
+<img src="FIGS/C_invperf.png" alt="C_invperf.png" width="100%">
+
+<figcaption><span class="figure-number">Figure 5: </span>Performance of the different slow flow equations</figcaption>
+</figure>
+</figure>
+<div class="org-center">
+<p>
+<span class="underline"><b>FPE Results</b></span>
+</p>
+</div></li>
+<li><p>
+Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution is written as \(p = \eta_i \phi_i e^{-\lambda_i t}\)). 
+</p>
+
+<figure id="orga14dab3">
+<img src="FIGS/F_EigSpec.png" alt="F_EigSpec.png" width="100%">
+
+<figcaption><span class="figure-number">Figure 6: </span>Eigenspectra of the FPK Pencils</figcaption>
+</figure></li>
+<li>In each case, the leading eigenvalue is numerically zero, indicating the existence of a steady-state.</li>
+<li>The following are the PDFs computed using randomized transient simulations along with the PDF. The PDFs look to be <span class="underline"><b>nominally similar</b></span> for this case.</li>
+<li>I haven't implemented a 2-parameter KS-test to be more rigorous, but this seems to be well-established and doable.</li>
+</ul>
+</div>
+<ol class="org-ol">
+<li><a id="org110589e"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
+<div class="outline-text-5" id="text-1-3-1-1">
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_mms1.png" alt="F_LTHIST_mms1.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_mms1.png" alt="F_LTHIST_mms1.png" width="100%">
+  </figure>  
+</div>
+</div>
+</li>
+<li><a id="org46ba63b"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
+<div class="outline-text-5" id="text-1-3-1-2">
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_mms2.png" alt="F_LTHIST_mms2.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_mms2.png" alt="F_LTHIST_mms2.png" width="100%">
+  </figure>  
+</div>
+</div>
+</li>
+<li><a id="orgea0da4e"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
+<div class="outline-text-5" id="text-1-3-1-3">
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_emms1.png" alt="F_LTHIST_emms1.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_emms1.png" alt="F_LTHIST_emms1.png" width="100%">
+  </figure>  
+</div>
+</div>
+</li>
+<li><a id="orgbccf728"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
+<div class="outline-text-5" id="text-1-3-1-4">
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/F_LTHIST_emms2.png" alt="F_LTHIST_emms2.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/F_LDENS_emms2.png" alt="F_LTHIST_emms2.png" width="100%">
+  </figure>  
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org7340a5c" class="outline-3">
+<h3 id="org7340a5c"><span class="section-number-3">1.4.</span> Questions on Path Forward</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>We now have the capability of repeating this analysis for any system whose nonlinear modal characteristics are known.</li>
+<li>I have planned to use <span class="underline"><b>EPMC results from the RuBber Beam</b></span> to generate nonlinear results.</li>
+<li>Any specific cases I should focus on?</li>
+<li>We could have an <span class="underline"><b>experimental campaign</b></span> focused on
+<ul class="org-ul">
+<li>Obtaining backbones with PLL -&gt; FPE pdf predictions</li>
+<li>Conducting phase-noise excitation and validating</li>
+<li>The same backbones could also be used for quasi-periodic synthesis.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orga9f7825" class="outline-4">
+<h4 id="orga9f7825"><span class="section-number-4">1.4.1.</span> Something that caught my eye: "Stochastic jump" phenomena <a href="#citeproc_bib_item_4">[4]</a></h4>
+<div class="outline-text-4" id="text-1-4-1">
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/Hu2012_1.png" alt="Hu2012_1.png" width="100%">
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/Hu2012_2.png" alt="Hu2012_2.png" width="100%">
+  </figure>  
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org15d4d1d" class="outline-3">
+<h3 id="org15d4d1d"><span class="section-number-3">1.5.</span> Meeting Notes</h3>
+<div class="outline-text-3" id="text-1-5">
+<ol class="org-ol">
+<li>Cases with co-existing stable solutions are certainly more interesting.
+<ul class="org-ul">
+<li>Doing an example with a reasonably soft impact might be interesting.</li>
+</ul></li>
+<li>What are the kinds of analysis we can do once we have the density distribution?
+<ul class="org-ul">
+<li>For multi-valued response regimes, we could compute transition likelihoods.</li>
+</ul></li>
+<li>We should move on to multi-input cases, where there is <b>spatially correlated</b> random input.
+<ul class="org-ul">
+<li>Maybe we can model these as \(\frac{F_1}{2}e^{i\sigma_1}+\frac{F_2}{2}e^{i\sigma_2}+\dots\) ?</li>
+<li>Using the FPE in this context really has lots of relevance since doing Monte-Carlo here is quite infeasible due to the potentially large number of independent random variables.</li>
+<li>The <b>vortex-induced cable vibration problem</b> that Tobi worked on presents such a case. Could be interesting to have a look at how the excitation is modeled.</li>
+</ul></li>
+<li>It is important that the example we choose shows that we NEED to model it is a non-linear system (statistical linearization would lead to spurious results). This would really drive home the point of the necessity of this formulation.
+<ul class="org-ul">
+<li>An added aspect is that using NMA backbones allow us to use it for MDOF problems, where, already, computational savings are possible.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</section>
+
+<section id="outline-container-org9ceb517" class="outline-2">
+<h2 id="org9ceb517"><span class="section-number-2">2.</span> Week 2</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgeabb194" class="outline-3">
+<h3 id="orgeabb194"><span class="section-number-3">2.1.</span> Validation on Nonlinear Systems</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>The implementation for the most general case with support for nonlinear MDOF oscillators specified through \(\omega_0(q), \zeta(q), \psi(q)\) is complete.</li>
+<li>I only have results for an SDOF oscillator here, more soon.</li>
+<li><p>
+The dependencies of the second order formulae on the different terms are tabulated below:
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Formula</th>
+<th scope="col" class="org-left">\(\omega\quad\)</th>
+<th scope="col" class="org-left">\(\zeta\quad\)</th>
+<th scope="col" class="org-left">\(\psi\quad\)</th>
+<th scope="col" class="org-left">\(\omega'\quad\)</th>
+<th scope="col" class="org-left">\(\zeta'\quad\)</th>
+<th scope="col" class="org-left">\(\psi'\quad\)</th>
+<th scope="col" class="org-left">\(\omega''\quad\)</th>
+<th scope="col" class="org-left">\(\zeta''\quad\)</th>
+<th scope="col" class="org-left">\(\psi''\quad\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">\(\mathcal{O}(\textcolor{red}{p})\) EMMS</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">\(\mathcal{O}(\textcolor{red}{p^2})\) MMS</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&checkmark;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+<div id="outline-container-org8a85806" class="outline-4">
+<h4 id="org8a85806"><span class="section-number-4">2.1.1.</span> SDOF Duffing Oscillator</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ul class="org-ul">
+<li>Considered EOM:
+\[ \ddot{x} + 2\zeta_n\omega_n \dot{x}+\omega_n^2x + \alpha x^3=F\cos\sigma, \]
+with parameters,
+\[ \omega_0=1\,rad/s,\quad \zeta_n=10^{-3},\quad \alpha=0.2,\quad F=0.07\,N. \]</li>
+<li><p>
+Used EPMC to compute the backbones first
+</p>
+<figure class="fullwidth" id="org55dd882">
+
+<figure id="org1db1df1">
+<img src="FIGS/G1_SDOFEPMC_duffing.png" alt="G1_SDOFEPMC_duffing.png">
+
+<figcaption><span class="figure-number">Figure 7: </span>EPMC Backbone for the SDOF Duffing oscillator</figcaption>
+</figure>
+</figure></li>
+<li><p>
+This is next used to obtain the PDF of the slow flow system using the four different formulations. Here is a summary.
+</p>
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_duffing_mms1.png" alt="G3_SDOFFPEfr_duffing_mms1.png" width="100%">
+    <figcaption class="colcap">MMS1</figcaption>
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_duffing_mms2.png" alt="G3_SDOFFPEfr_duffing_mms2.png" width="100%">
+    <figcaption class="colcap">MMS2</figcaption>
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_duffing_emms1.png" alt="G3_SDOFFPEfr_duffing_emms1.png" width="100%">
+    <figcaption class="colcap">CXA (EMMS1)</figcaption>
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_duffing_emms2.png" alt="G3_SDOFFPEfr_duffing_emms2.png" width="100%">
+    <figcaption class="colcap">EMMS2</figcaption>
+  </figure>    
+</div></li>
+<li>It looks like CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS) seems to underpredict the density of the higher amplitude.</li>
+</ul>
+</div>
+<ol class="org-ol">
+<li><a id="orgac30107"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
+<div class="outline-text-5" id="text-2-1-1-1">
+<figure class="fullwidth" id="org54e34cc">
+
+<figure id="org72a8815">
+<img src="FIGS/G3_SDOFFPE_duffing_mms1.png" alt="G3_SDOFFPE_duffing_mms1.png">
+
+<figcaption><span class="figure-number">Figure 8: </span>FPE Results for the Duffing Oscillator with MMS1</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+<li><a id="orgcb697fd"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
+<div class="outline-text-5" id="text-2-1-1-2">
+<figure class="fullwidth" id="orgf7e6bc0">
+
+<figure id="orgf269aec">
+<img src="FIGS/G3_SDOFFPE_duffing_mms2.png" alt="G3_SDOFFPE_duffing_mms2.png">
+
+<figcaption><span class="figure-number">Figure 9: </span>FPE Results for the Duffing Oscillator with MMS2</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+<li><a id="org4c1f0f8"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
+<div class="outline-text-5" id="text-2-1-1-3">
+<figure class="fullwidth" id="org6a8d157">
+
+<figure id="orgee8117d">
+<img src="FIGS/G3_SDOFFPE_duffing_emms1.png" alt="G3_SDOFFPE_duffing_emms1.png">
+
+<figcaption><span class="figure-number">Figure 10: </span>FPE Results for the Duffing Oscillator with CXA (EMMS1)</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+<li><a id="org7775293"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
+<div class="outline-text-5" id="text-2-1-1-4">
+<figure class="fullwidth" id="orgececc23">
+
+<figure id="org53e4212">
+<img src="FIGS/G3_SDOFFPE_duffing_emms2.png" alt="G3_SDOFFPE_duffing_emms2.png">
+
+<figcaption><span class="figure-number">Figure 11: </span>FPE Results for the Duffing Oscillator with CXA (EMMS2)</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgcc9d3b1" class="outline-4">
+<h4 id="orgcc9d3b1"><span class="section-number-4">2.1.2.</span> SDOF Oscillator with Friction</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<ul class="org-ul">
+<li>Considered EOM:
+\[ \ddot{x} + 2\zeta_n\omega_n \dot{x}+\omega_n^2x + f_{jenk}(x; k_t, \mu N)=F\cos\sigma, \]
+with parameters,
+\[ \omega_0=1\,rad/s,\quad \zeta_n=10^{-3},\quad k_t=3\,N/m,\quad \mu N=0.5\,N,\quad F=0.2\,N. \]</li>
+<li><p>
+Used EPMC to compute the backbones first
+</p>
+<figure class="fullwidth" id="orgdbd60b4">
+
+<figure id="org7d119fd">
+<img src="FIGS/G1_SDOFEPMC_jenkins.png" alt="G1_SDOFEPMC_jenkins.png">
+
+<figcaption><span class="figure-number">Figure 12: </span>EPMC Backbone for the SDOF Duffing oscillator</figcaption>
+</figure>
+</figure></li>
+<li><p>
+This is next used to obtain the PDF of the slow flow system using the four different formulations. Here is a summary.
+</p>
+<div class="row fullwidth">
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_jenkins_mms1.png" alt="G3_SDOFFPEfr_jenkins_mms1.png" width="100%">
+    <figcaption class="colcap">MMS1</figcaption>
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_jenkins_mms2.png" alt="G3_SDOFFPEfr_jenkins_mms2.png" width="100%">
+    <figcaption class="colcap">MMS2</figcaption>
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_jenkins_emms1.png" alt="G3_SDOFFPEfr_jenkins_emms1.png" width="100%">
+    <figcaption class="colcap">CXA (EMMS1)</figcaption>
+  </figure>
+  <figure class="column">
+    <img src="./FIGS/G3_SDOFFPEfr_jenkins_emms2.png" alt="G3_SDOFFPEfr_jenkins_emms2.png" width="100%">
+    <figcaption class="colcap">EMMS2</figcaption>
+  </figure>    
+</div></li>
+
+<li>Both the first order approximations seem to result in spurious oscillations in the predicted PDF. The second order forms seem to find it easier.
+Perhaps this is related to the interpolated approximation of the non-smooth backbone?</li>
+</ul>
+</div>
+<ol class="org-ol">
+<li><a id="org8cb7b8c"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
+<div class="outline-text-5" id="text-2-1-2-1">
+<figure class="fullwidth" id="org054af99">
+
+<figure id="orga6b2cc3">
+<img src="FIGS/G3_SDOFFPE_jenkins_mms1.png" alt="G3_SDOFFPE_jenkins_mms1.png">
+
+<figcaption><span class="figure-number">Figure 13: </span>FPE Results for the Frictional Oscillator with MMS1</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+<li><a id="org2eb792d"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
+<div class="outline-text-5" id="text-2-1-2-2">
+<figure class="fullwidth" id="org1a29275">
+
+<figure id="orge1958d4">
+<img src="FIGS/G3_SDOFFPE_jenkins_mms2.png" alt="G3_SDOFFPE_jenkins_mms2.png">
+
+<figcaption><span class="figure-number">Figure 14: </span>FPE Results for the Frictional Oscillator with MMS2</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+<li><a id="org8923eab"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
+<div class="outline-text-5" id="text-2-1-2-3">
+<figure class="fullwidth" id="org0c33392">
+
+<figure id="orgefcaff6">
+<img src="FIGS/G3_SDOFFPE_jenkins_emms1.png" alt="G3_SDOFFPE_jenkins_emms1.png">
+
+<figcaption><span class="figure-number">Figure 15: </span>FPE Results for the Frictional Oscillator with CXA (EMMS1)</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+<li><a id="orgfaaefcf"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
+<div class="outline-text-5" id="text-2-1-2-4">
+<figure class="fullwidth" id="org37839c4">
+
+<figure id="orge093bad">
+<img src="FIGS/G3_SDOFFPE_jenkins_emms2.png" alt="G3_SDOFFPE_jenkins_emms2.png">
+
+<figcaption><span class="figure-number">Figure 16: </span>FPE Results for the Frictional Oscillator with CXA (EMMS2)</figcaption>
+</figure>
+</figure>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org1e4eb24" class="outline-4">
+<h4 id="org1e4eb24"><span class="section-number-4">2.1.3.</span> Pointers from Tobi on Experimentation</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<ul class="org-ul">
+<li>If we have a Gaussian process with a given target PSD that needs to be achieved for the force, this can be done iteratively.</li>
+<li>What we have here is,
+<ul class="org-ul">
+<li>PSD:
+\[ \Phi_{FF}(\omega) = \frac{\lambda^2\overline{\nu}^2}{4\pi} \frac{\overline{\Omega}^2+\frac{\overline{\nu}^4}{4}+\omega^2}{(\Omega^2+\frac{\overline{\nu}^4}{4}-\omega^2)^2+\omega^2\overline{\nu}^4}\text{, with } \overline{\nu}=\frac{\nu}{\sqrt{F_s}}.  \]</li>
+<li><p>
+PDF:
+</p>
+\begin{equation*}
+  p_F(f) = \begin{cases} \frac{1}{\pi\sqrt{(\Omega^2-f^2)}} & |f|< F\\
+    0 & \text{otherwise} \end{cases}
+\end{equation*}</li>
+</ul></li>
+<li>If we generated a voltage signal \(v(t) = V\cos\sigma\) with random phase \(\sigma\), we don't have enough degrees of freedom to adjust the force spectrum.</li>
+<li>We discussed 2 alternatives:</li>
+</ul>
+</div>
+<ol class="org-ol">
+<li><a id="org1a81214"></a>Set \(\sigma=0\) and make \(F\) a stationary Gaussian process with desired spectrum<br>
+<div class="outline-text-5" id="text-2-1-3-1">
+<ul class="org-ul">
+<li>This allows Tobi to apply techniques he is already familiar with</li>
+<li>The excitation is not phase-noise excitation</li>
+<li>Amplitude-phase equations are still applicable but the will look different</li>
+</ul>
+</div>
+</li>
+<li><a id="orgb2cf9e2"></a>Try a novel iterative approach<br>
+<div class="outline-text-5" id="text-2-1-3-2">
+<ul class="org-ul">
+<li>We start with providing a desired PSD to the excitation</li>
+<li>We take the output voltage in time domain and tranform it to the desired PDF</li>
+<li>We then check the output force spectrum and adjust the initial PSD accordingly</li>
+<li>Tobi is not sure if this has been tried in the literature, said he'll try to find papers</li>
+<li>This will be a new approach from the experimental side.</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org5addb68" class="outline-4">
+<h4 id="org5addb68"><span class="section-number-4">2.1.4.</span> Things to try</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<ul class="org-ul">
+<li>Linear interpolation</li>
+<li>DG for discretization</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="outline-container-orge5f663b" class="outline-2">
+<h2 id="orge5f663b"><span class="section-number-2">3.</span> References</h2>
+<div class="outline-text-2" id="text-3">
+<style>.csl-left-margin{float: left; padding-right: 0em;}
+ .csl-right-inline{margin: 0 0 0 1em;}</style><div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>
+    <div class="csl-left-margin">[1]</div><div class="csl-right-inline">M. F. Dimentberg, E. Mo, and A. Naess, “Probability Density and Excursions of Structural Response to Imperfectly Periodic Excitation,” <i>Journal of engineering mechanics</i>, vol. 133, no. 9, pp. 1037–1041, Sep. 2007, doi: <a href="https://doi.org/10.1061/(ASCE)0733-9399(2007)133:9(1037)">10.1061/(ASCE)0733-9399(2007)133:9(1037)</a>.</div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>
+    <div class="csl-left-margin">[2]</div><div class="csl-right-inline">W. Eugene and Z. Moshe, “On the relation between ordinary and stochastic differential equations,” <i>International journal of engineering science</i>, vol. 3, no. 2, pp. 213–229, Jul. 1965, doi: <a href="https://doi.org/10.1016/0020-7225(65)90045-5">10.1016/0020-7225(65)90045-5</a>.</div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_3"></a>
+    <div class="csl-left-margin">[3]</div><div class="csl-right-inline">A. Naess and V. Moe, “Efficient path integration methods for nonlinear dynamic systems,” <i>Probabilistic engineering mechanics</i>, vol. 15, no. 2, pp. 221–231, Apr. 2000, doi: <a href="https://doi.org/10.1016/S0266-8920(99)00031-4">10.1016/S0266-8920(99)00031-4</a>.</div>
+  </div>
+  <div class="csl-entry"><a id="citeproc_bib_item_4"></a>
+    <div class="csl-left-margin">[4]</div><div class="csl-right-inline">F. Hu, L. Chen, and W. Zhu, “Stationary response of strongly non-linear oscillator with fractional derivative damping under bounded noise excitation,” <i>International journal of non-linear mechanics</i>, vol. 47, no. 10, pp. 1081–1087, Dec. 2012, doi: <a href="https://doi.org/10.1016/j.ijnonlinmec.2011.09.012">10.1016/j.ijnonlinmec.2011.09.012</a>.</div>
+  </div>
+</div>
+
+<script type="text/javascript" src="./collapsec.js"></script>
+<style>  
+  #fixbut {
+      position: fixed;
+      top: 10px; /* Adjust the top position as needed */
+      right: 10px; /* Adjust the right position as needed */
+      padding: 10px;
+      background-color: #fffff8;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  #fixbut2 {
+      position: fixed;
+      top: 10px; /* Adjust the top position as needed */
+      left: 10px; /* Adjust the right position as needed */
+      padding: 10px;
+      background-color: #fffff8;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  .column {
+    float: left;
+    width: 50%;
+  }
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .column4 {
+    float: left;
+    width: 25%;
+    text-align: center;
+  }
+
+  .colcap {
+  text-align: center;
+  }
+</style>
+
+<script type="text/javascript">
+togglevisib();
+var art = document.getElementsByTagName('article')[0];
+var std = 'dark';
+var btnd = document.getElementsByClassName("tgld");
+var als = document.getElementsByTagName('a');
+var alss = Array.from(als).concat(Array.from(
+    document.getElementsByClassName('tufte-underline'))).concat(Array.from(
+        document.getElementsByClassName('hover-tufte-underline:hover')));
+
+function toggledark(e) {
+    document.body.style.backgroundColor=(std=='dark')?'#fffff8':'#151515';
+    document.body.style.color=(std=='dark')?'#111':'#ddd';
+    btnd[0].value=std+' mode';
+    btnd[0].style.backgroundColor=(std=='dark')?'#111':'#ddd';
+    btnd[0].style.color=(std=='dark')?'#fffff8':'#151515';
+    btn[0].style.backgroundColor=(std=='dark')?'#111':'#ddd';
+    btn[0].style.color=(std=='dark')?'#fffff8':'#151515';
+    if (std=='dark') for (var i = 0; i < als.length; i++)
+        als[i].style.textShadow='0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8';	
+    else for (var i = 0; i < als.length; i++)
+        als[i].style.textShadow='0.03em 0 #151515, -0.03em 0 #151515, 0 0.03em #151515, 0 -0.03em #151515, 0.06em 0 #151515, -0.06em 0 #151515, 0.09em 0 #151515, -0.09em 0 #151515, 0.12em 0 #151515, -0.12em 0 #151515, 0.15em 0 #151515, -0.15em 0 #151515';
+    std=(std=='dark')?'light':'dark';
+}
+
+btnd[0].addEventListener("click", toggledark);
+// toggledark();
+
+document.addEventListener('keypress', function(e) {if (e.which==100) {toggledark();}})
+</script>
+</div>
+</section>
+</article>
+<footer id="postamble" class="status">
+<p class="date">Date: 2024:Jan:17</p>
+<p class="author">Author: Nidish Balaji</p>
+<p class="date">Created: 2024-01-29 Mon 21:32</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</footer>
+</body>
+</html>
