@@ -1,5 +1,6 @@
 #+title: My Pages Landing
 #+author: Nidish Narayanaa Balaji
+#+options: toc:nil
 
 Here I have my pages
 
@@ -9,6 +10,6 @@ Here I have my pages
 + Here is the page: [[https://nidish96.github.io/mypages/STOCHNNMREP/rep1.html]]
 
 #+begin_src inline-js
-  document.body.style.background='black';
-  document.body.style.color='white';
+  // document.body.style.background='black';
+  // document.body.style.color='white';
 #+end_src  
