@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-01-29 Mon 21:32 -->
+<!-- 2024-02-03 Sat 08:51 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Implementation and Validation of the Fokker-Planck Equation for Narrow-band excitation</title>
@@ -236,12 +236,12 @@
 </header><input id="fixbut" type="button" value="hide all" class="tglv" class="right">
 <input id="fixbut2" type="button" value="dark mode" class="tgld" class="right">
 
-<section id="outline-container-orgc3e7ee9" class="outline-2">
-<h2 id="orgc3e7ee9"><span class="section-number-2">1.</span> Week 1</h2>
+<section id="outline-container-orgea9ebca" class="outline-2">
+<h2 id="orgea9ebca"><span class="section-number-2">1.</span> Week 1</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgfe43e43" class="outline-3">
-<h3 id="orgfe43e43"><span class="section-number-3">1.1.</span> Excitation Design (from <a href="#citeproc_bib_item_1">[1]</a>)</h3>
+<div id="outline-container-org364695d" class="outline-3">
+<h3 id="org364695d"><span class="section-number-3">1.1.</span> Excitation Design (from <a href="#citeproc_bib_item_1">[1]</a>)</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>The excitation is designed through the stochastically defined phase \(\sigma(t)\),
@@ -268,7 +268,7 @@ Here is a single realization of the same signal.
 </p>
 <figure id="real">
 
-<figure id="orgd00f35e">
+<figure id="orga95138f">
 <img src="FIGS/B_NBsig.png" alt="B_NBsig.png" width="50%">      
 
 <figcaption><span class="figure-number">Figure 2: </span>Single Realization of Excitation Signal</figcaption>
@@ -277,8 +277,8 @@ Here is a single realization of the same signal.
 </ul>
 </div>
 </div>
-<div id="outline-container-org7e0528c" class="outline-3">
-<h3 id="org7e0528c"><span class="section-number-3">1.2.</span> Stochastic Dynamics Overview + FPE</h3>
+<div id="outline-container-org45b7e3e" class="outline-3">
+<h3 id="org45b7e3e"><span class="section-number-3">1.2.</span> Stochastic Dynamics Overview + FPE</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Consider a first order dynamical system of the form,
@@ -308,8 +308,8 @@ where \(\mathcal{D}\) is the domain of \(x_t\).</li>
 </ul>
 </div>
 
-<div id="outline-container-org66fac4c" class="outline-4">
-<h4 id="org66fac4c"><span class="section-number-4">1.2.1.</span> Weak form of the FPE</h4>
+<div id="outline-container-orgded8a6f" class="outline-4">
+<h4 id="orgded8a6f"><span class="section-number-4">1.2.1.</span> Weak form of the FPE</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <ul class="org-ul">
 <li><p>
@@ -350,8 +350,8 @@ and applying a Galerkin projection (choosing \(N_k(x)\) as \(g(x)\)) yields the 
 </div>
 </div>
 
-<div id="outline-container-orgee540fa" class="outline-3">
-<h3 id="orgee540fa"><span class="section-number-3">1.3.</span> Slow-Flow Amplitude-Phase Dynamics</h3>
+<div id="outline-container-org88b7856" class="outline-3">
+<h3 id="org88b7856"><span class="section-number-3">1.3.</span> Slow-Flow Amplitude-Phase Dynamics</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>The modal equations of motion of a nonlinear oscillator can be expressed as,
@@ -428,8 +428,8 @@ Four different cases will be considered for the studies:
 </ul>
 </div>
 
-<div id="outline-container-orga1be079" class="outline-4">
-<h4 id="orga1be079"><span class="section-number-4">1.3.1.</span> Validation on Linear System Dynamics</h4>
+<div id="outline-container-org603fad1" class="outline-4">
+<h4 id="org603fad1"><span class="section-number-4">1.3.1.</span> Validation on Linear System Dynamics</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <ul class="org-ul">
 <li>For Linear systems (\(\zeta, \omega_0, F\) taken to be constants), the slow-flow expressions turn out to be,
@@ -481,18 +481,18 @@ Four different cases will be considered for the studies:
 <li><p>
 Here is a summary plot. Deterministically, the MMS approaches seem to match the 
 </p>
-<figure class="fullwidth" id="org9305691">
+<figure class="fullwidth" id="org35ad51f">
 
-<figure id="org283ee86">
+<figure id="org1635fb0">
 <img src="FIGS/C_linsystry0.png" alt="C_linsystry0.png" width="100%">
 
 <figcaption><span class="figure-number">Figure 3: </span>Slow-flow envelopes against the transient response</figcaption>
 </figure>
 </figure>
 
-<figure id="org67b76ae">
+<figure id="orgaeb13b6">
 
-<figure id="org6380f92">
+<figure id="orgd7ae586">
 <img src="FIGS/C_ampzoomin.png" alt="C_ampzoomin.png" width="80%">
 
 <figcaption><span class="figure-number">Figure 4: </span>A zoomed in view of the amplitude responses</figcaption>
@@ -502,9 +502,9 @@ Here is a summary plot. Deterministically, the MMS approaches seem to match the
 <li><p>
 Looking closer seems to show that although the others track the true envelope closer, they seem to have some bias, while CXA does not. The MMS approaches, however, show better performance in standard deviation. 
 </p>
-<figure class="fullwidth" id="orge66aa57">
+<figure class="fullwidth" id="org0f8825d">
 
-<figure id="orgceb5752">
+<figure id="orged45e5d">
 <img src="FIGS/C_invperf.png" alt="C_invperf.png" width="100%">
 
 <figcaption><span class="figure-number">Figure 5: </span>Performance of the different slow flow equations</figcaption>
@@ -519,7 +519,7 @@ Looking closer seems to show that although the others track the true envelope cl
 Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution is written as \(p = \eta_i \phi_i e^{-\lambda_i t}\)). 
 </p>
 
-<figure id="orga14dab3">
+<figure id="org00d1346">
 <img src="FIGS/F_EigSpec.png" alt="F_EigSpec.png" width="100%">
 
 <figcaption><span class="figure-number">Figure 6: </span>Eigenspectra of the FPK Pencils</figcaption>
@@ -530,7 +530,7 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org110589e"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
+<li><a id="orgfd445f4"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
 <div class="outline-text-5" id="text-1-3-1-1">
 <div class="row fullwidth">
   <figure class="column">
@@ -542,7 +542,7 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </div>
 </div>
 </li>
-<li><a id="org46ba63b"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
+<li><a id="org3ca552b"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
 <div class="outline-text-5" id="text-1-3-1-2">
 <div class="row fullwidth">
   <figure class="column">
@@ -554,7 +554,7 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </div>
 </div>
 </li>
-<li><a id="orgea0da4e"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
+<li><a id="orgaed7727"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
 <div class="outline-text-5" id="text-1-3-1-3">
 <div class="row fullwidth">
   <figure class="column">
@@ -566,7 +566,7 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </div>
 </div>
 </li>
-<li><a id="orgbccf728"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
+<li><a id="org5e2f6c0"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
 <div class="outline-text-5" id="text-1-3-1-4">
 <div class="row fullwidth">
   <figure class="column">
@@ -581,8 +581,8 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </ol>
 </div>
 </div>
-<div id="outline-container-org7340a5c" class="outline-3">
-<h3 id="org7340a5c"><span class="section-number-3">1.4.</span> Questions on Path Forward</h3>
+<div id="outline-container-org7fc533f" class="outline-3">
+<h3 id="org7fc533f"><span class="section-number-3">1.4.</span> Questions on Path Forward</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>We now have the capability of repeating this analysis for any system whose nonlinear modal characteristics are known.</li>
@@ -596,8 +596,8 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orga9f7825" class="outline-4">
-<h4 id="orga9f7825"><span class="section-number-4">1.4.1.</span> Something that caught my eye: "Stochastic jump" phenomena <a href="#citeproc_bib_item_4">[4]</a></h4>
+<div id="outline-container-org0a95a6d" class="outline-4">
+<h4 id="org0a95a6d"><span class="section-number-4">1.4.1.</span> Something that caught my eye: "Stochastic jump" phenomena <a href="#citeproc_bib_item_4">[4]</a></h4>
 <div class="outline-text-4" id="text-1-4-1">
 <div class="row fullwidth">
   <figure class="column">
@@ -610,8 +610,8 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </div>
 </div>
 </div>
-<div id="outline-container-org15d4d1d" class="outline-3">
-<h3 id="org15d4d1d"><span class="section-number-3">1.5.</span> Meeting Notes</h3>
+<div id="outline-container-org87c0461" class="outline-3">
+<h3 id="org87c0461"><span class="section-number-3">1.5.</span> Meeting Notes</h3>
 <div class="outline-text-3" id="text-1-5">
 <ol class="org-ol">
 <li>Cases with co-existing stable solutions are certainly more interesting.
@@ -637,12 +637,12 @@ Here are the Eigenspectra of the FPK pencils. (Note that the analytical solution
 </div>
 </section>
 
-<section id="outline-container-org9ceb517" class="outline-2">
-<h2 id="org9ceb517"><span class="section-number-2">2.</span> Week 2</h2>
+<section id="outline-container-orgb869162" class="outline-2">
+<h2 id="orgb869162"><span class="section-number-2">2.</span> Week 2</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgeabb194" class="outline-3">
-<h3 id="orgeabb194"><span class="section-number-3">2.1.</span> Validation on Nonlinear Systems</h3>
+<div id="outline-container-org8dfb6ab" class="outline-3">
+<h3 id="org8dfb6ab"><span class="section-number-3">2.1.</span> Validation on Nonlinear Systems</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>The implementation for the most general case with support for nonlinear MDOF oscillators specified through \(\omega_0(q), \zeta(q), \psi(q)\) is complete.</li>
@@ -744,8 +744,8 @@ The dependencies of the second order formulae on the different terms are tabulat
 </table></li>
 </ul>
 </div>
-<div id="outline-container-org8a85806" class="outline-4">
-<h4 id="org8a85806"><span class="section-number-4">2.1.1.</span> SDOF Duffing Oscillator</h4>
+<div id="outline-container-orge4f1610" class="outline-4">
+<h4 id="orge4f1610"><span class="section-number-4">2.1.1.</span> SDOF Duffing Oscillator</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li>Considered EOM:
@@ -755,9 +755,9 @@ with parameters,
 <li><p>
 Used EPMC to compute the backbones first
 </p>
-<figure class="fullwidth" id="org55dd882">
+<figure class="fullwidth" id="org47f5499">
 
-<figure id="org1db1df1">
+<figure id="org3a45dad">
 <img src="FIGS/G1_SDOFEPMC_duffing.png" alt="G1_SDOFEPMC_duffing.png">
 
 <figcaption><span class="figure-number">Figure 7: </span>EPMC Backbone for the SDOF Duffing oscillator</figcaption>
@@ -788,11 +788,11 @@ This is next used to obtain the PDF of the slow flow system using the four diffe
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="orgac30107"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
+<li><a id="org109451b"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
 <div class="outline-text-5" id="text-2-1-1-1">
-<figure class="fullwidth" id="org54e34cc">
+<figure class="fullwidth" id="orgf16e37f">
 
-<figure id="org72a8815">
+<figure id="org305bb23">
 <img src="FIGS/G3_SDOFFPE_duffing_mms1.png" alt="G3_SDOFFPE_duffing_mms1.png">
 
 <figcaption><span class="figure-number">Figure 8: </span>FPE Results for the Duffing Oscillator with MMS1</figcaption>
@@ -800,11 +800,11 @@ This is next used to obtain the PDF of the slow flow system using the four diffe
 </figure>
 </div>
 </li>
-<li><a id="orgcb697fd"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
+<li><a id="org4a7b40f"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
 <div class="outline-text-5" id="text-2-1-1-2">
-<figure class="fullwidth" id="orgf7e6bc0">
+<figure class="fullwidth" id="org258ed6e">
 
-<figure id="orgf269aec">
+<figure id="orgc25e3aa">
 <img src="FIGS/G3_SDOFFPE_duffing_mms2.png" alt="G3_SDOFFPE_duffing_mms2.png">
 
 <figcaption><span class="figure-number">Figure 9: </span>FPE Results for the Duffing Oscillator with MMS2</figcaption>
@@ -812,11 +812,11 @@ This is next used to obtain the PDF of the slow flow system using the four diffe
 </figure>
 </div>
 </li>
-<li><a id="org4c1f0f8"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
+<li><a id="orgdf7ec1e"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
 <div class="outline-text-5" id="text-2-1-1-3">
-<figure class="fullwidth" id="org6a8d157">
+<figure class="fullwidth" id="orgce8d7be">
 
-<figure id="orgee8117d">
+<figure id="orgd8854b0">
 <img src="FIGS/G3_SDOFFPE_duffing_emms1.png" alt="G3_SDOFFPE_duffing_emms1.png">
 
 <figcaption><span class="figure-number">Figure 10: </span>FPE Results for the Duffing Oscillator with CXA (EMMS1)</figcaption>
@@ -824,11 +824,11 @@ This is next used to obtain the PDF of the slow flow system using the four diffe
 </figure>
 </div>
 </li>
-<li><a id="org7775293"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
+<li><a id="org6eda7bb"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
 <div class="outline-text-5" id="text-2-1-1-4">
-<figure class="fullwidth" id="orgececc23">
+<figure class="fullwidth" id="org9e60e20">
 
-<figure id="org53e4212">
+<figure id="org9b0d91f">
 <img src="FIGS/G3_SDOFFPE_duffing_emms2.png" alt="G3_SDOFFPE_duffing_emms2.png">
 
 <figcaption><span class="figure-number">Figure 11: </span>FPE Results for the Duffing Oscillator with CXA (EMMS2)</figcaption>
@@ -838,8 +838,8 @@ This is next used to obtain the PDF of the slow flow system using the four diffe
 </li>
 </ol>
 </div>
-<div id="outline-container-orgcc9d3b1" class="outline-4">
-<h4 id="orgcc9d3b1"><span class="section-number-4">2.1.2.</span> SDOF Oscillator with Friction</h4>
+<div id="outline-container-org1a483d0" class="outline-4">
+<h4 id="org1a483d0"><span class="section-number-4">2.1.2.</span> SDOF Oscillator with Friction</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <ul class="org-ul">
 <li>Considered EOM:
@@ -849,9 +849,9 @@ with parameters,
 <li><p>
 Used EPMC to compute the backbones first
 </p>
-<figure class="fullwidth" id="orgdbd60b4">
+<figure class="fullwidth" id="orgdd2b987">
 
-<figure id="org7d119fd">
+<figure id="orga47d03b">
 <img src="FIGS/G1_SDOFEPMC_jenkins.png" alt="G1_SDOFEPMC_jenkins.png">
 
 <figcaption><span class="figure-number">Figure 12: </span>EPMC Backbone for the SDOF Duffing oscillator</figcaption>
@@ -884,11 +884,11 @@ Perhaps this is related to the interpolated approximation of the non-smooth back
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org8cb7b8c"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
+<li><a id="org686e103"></a>\(\mathcal{O}(\textcolor{red}{\epsilon})\) MMS<br>
 <div class="outline-text-5" id="text-2-1-2-1">
-<figure class="fullwidth" id="org054af99">
+<figure class="fullwidth" id="orgde181ed">
 
-<figure id="orga6b2cc3">
+<figure id="org1b88ee8">
 <img src="FIGS/G3_SDOFFPE_jenkins_mms1.png" alt="G3_SDOFFPE_jenkins_mms1.png">
 
 <figcaption><span class="figure-number">Figure 13: </span>FPE Results for the Frictional Oscillator with MMS1</figcaption>
@@ -896,11 +896,11 @@ Perhaps this is related to the interpolated approximation of the non-smooth back
 </figure>
 </div>
 </li>
-<li><a id="org2eb792d"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
+<li><a id="org28c9b2b"></a>\(\mathcal{O}(\textcolor{red}{\epsilon^2})\) MMS<br>
 <div class="outline-text-5" id="text-2-1-2-2">
-<figure class="fullwidth" id="org1a29275">
+<figure class="fullwidth" id="org1644d82">
 
-<figure id="orge1958d4">
+<figure id="org7a8269a">
 <img src="FIGS/G3_SDOFFPE_jenkins_mms2.png" alt="G3_SDOFFPE_jenkins_mms2.png">
 
 <figcaption><span class="figure-number">Figure 14: </span>FPE Results for the Frictional Oscillator with MMS2</figcaption>
@@ -908,11 +908,11 @@ Perhaps this is related to the interpolated approximation of the non-smooth back
 </figure>
 </div>
 </li>
-<li><a id="org8923eab"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
+<li><a id="org79bf65b"></a>CXA (\(\mathcal{O}(\textcolor{red}{p})\) EMMS)<br>
 <div class="outline-text-5" id="text-2-1-2-3">
-<figure class="fullwidth" id="org0c33392">
+<figure class="fullwidth" id="org5c6d2ec">
 
-<figure id="orgefcaff6">
+<figure id="org953231b">
 <img src="FIGS/G3_SDOFFPE_jenkins_emms1.png" alt="G3_SDOFFPE_jenkins_emms1.png">
 
 <figcaption><span class="figure-number">Figure 15: </span>FPE Results for the Frictional Oscillator with CXA (EMMS1)</figcaption>
@@ -920,11 +920,11 @@ Perhaps this is related to the interpolated approximation of the non-smooth back
 </figure>
 </div>
 </li>
-<li><a id="orgfaaefcf"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
+<li><a id="orgb12171b"></a>\(\mathcal{O}(\textcolor{red}{p^2})\) EMMS<br>
 <div class="outline-text-5" id="text-2-1-2-4">
-<figure class="fullwidth" id="org37839c4">
+<figure class="fullwidth" id="org8085057">
 
-<figure id="orge093bad">
+<figure id="org8ef9072">
 <img src="FIGS/G3_SDOFFPE_jenkins_emms2.png" alt="G3_SDOFFPE_jenkins_emms2.png">
 
 <figcaption><span class="figure-number">Figure 16: </span>FPE Results for the Frictional Oscillator with CXA (EMMS2)</figcaption>
@@ -934,8 +934,8 @@ Perhaps this is related to the interpolated approximation of the non-smooth back
 </li>
 </ol>
 </div>
-<div id="outline-container-org1e4eb24" class="outline-4">
-<h4 id="org1e4eb24"><span class="section-number-4">2.1.3.</span> Pointers from Tobi on Experimentation</h4>
+<div id="outline-container-org154dd58" class="outline-4">
+<h4 id="org154dd58"><span class="section-number-4">2.1.3.</span> Pointers from Tobi on Experimentation</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <ul class="org-ul">
 <li>If we have a Gaussian process with a given target PSD that needs to be achieved for the force, this can be done iteratively.</li>
@@ -956,7 +956,7 @@ PDF:
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org1a81214"></a>Set \(\sigma=0\) and make \(F\) a stationary Gaussian process with desired spectrum<br>
+<li><a id="org9cc2c85"></a>Set \(\sigma=0\) and make \(F\) a stationary Gaussian process with desired spectrum<br>
 <div class="outline-text-5" id="text-2-1-3-1">
 <ul class="org-ul">
 <li>This allows Tobi to apply techniques he is already familiar with</li>
@@ -965,7 +965,7 @@ PDF:
 </ul>
 </div>
 </li>
-<li><a id="orgb2cf9e2"></a>Try a novel iterative approach<br>
+<li><a id="org8004850"></a>Try a novel iterative approach<br>
 <div class="outline-text-5" id="text-2-1-3-2">
 <ul class="org-ul">
 <li>We start with providing a desired PSD to the excitation</li>
@@ -978,8 +978,8 @@ PDF:
 </li>
 </ol>
 </div>
-<div id="outline-container-org5addb68" class="outline-4">
-<h4 id="org5addb68"><span class="section-number-4">2.1.4.</span> Things to try</h4>
+<div id="outline-container-orgd3c7e6b" class="outline-4">
+<h4 id="orgd3c7e6b"><span class="section-number-4">2.1.4.</span> Things to try</h4>
 <div class="outline-text-4" id="text-2-1-4">
 <ul class="org-ul">
 <li>Linear interpolation</li>
@@ -989,8 +989,8 @@ PDF:
 </div>
 </div>
 </section>
-<section id="outline-container-orge5f663b" class="outline-2">
-<h2 id="orge5f663b"><span class="section-number-2">3.</span> References</h2>
+<section id="outline-container-orge44ad14" class="outline-2">
+<h2 id="orge44ad14"><span class="section-number-2">3.</span> References</h2>
 <div class="outline-text-2" id="text-3">
 <style>.csl-left-margin{float: left; padding-right: 0em;}
  .csl-right-inline{margin: 0 0 0 1em;}</style><div class="csl-bib-body">
@@ -1080,7 +1080,6 @@ function toggledark(e) {
 }
 
 btnd[0].addEventListener("click", toggledark);
-// toggledark();
 
 document.addEventListener('keypress', function(e) {if (e.which==100) {toggledark();}})
 </script>
@@ -1090,7 +1089,7 @@ document.addEventListener('keypress', function(e) {if (e.which==100) {toggledark
 <footer id="postamble" class="status">
 <p class="date">Date: 2024:Jan:17</p>
 <p class="author">Author: Nidish Balaji</p>
-<p class="date">Created: 2024-01-29 Mon 21:32</p>
+<p class="date">Created: 2024-02-03 Sat 08:51</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </footer>
 </body>
