@@ -1,0 +1,498 @@
+#+title: White Paper: CXA, MMS, & EMMS Applied to the SDOF Duffing Oscillator
+#+author: Nidish Narayanaa Balaji
+#+date: <2023-10-25 Wed>
+#+refproc: :abbreviate t
+#+latex_class_options: [12pt]
+#+bibliography: refs.bib
+#+options: h:3 num:t toc:nil
+#+latex_header: \usepackage[margin=0.5in]{geometry}
+#+latex_header: \usepackage{cancel}
+#+latex_header: \usepackage{cleveref}
+
+#+latex:\vspace{-2cm}
+* Introduction 
+:PROPERTIES:
+:CUSTOM_ID: sec-intro
+:END:
+1. The purpose of this white paper is to clarify the similarities across Complexification Averaging (CX-A), Method of Multiple Scales (MMS), and Enriched MMS (EMMS).
+2. The objective here is to *decompose the dynamics of a nonlinear oscillator into amplitude and phase coordinates*.
+3. Both CXA and MMS provide methods for this, with the following remarks
+   #+name: tab-ovw
+   #+caption: Table summarizing CXA and MMS.
+   +-----+--------------------------------------+------------------------------------+
+   | Sno |   Complexification Averaging (CXA)   |  Method of Multiple Scales (MMS)   |
+   +-----+--------------------------------------+------------------------------------+
+   | 1.  | Starts from a rather arbitrarily     | Has a more natural starting point, |
+   |     |defined "complexified coordinates"    |rooted in perturbation calculus     |
+   +-----+--------------------------------------+------------------------------------+
+   |  2. | Conducts "averaging" by integrating  | Conducts secular term cancellation |
+   |     |the resulting equations over one time |to derive the slow flow eqns.       |
+   |     |period to derive the slow flow eqns   |                                    |
+   |     |                                      |                                    |
+   +-----+--------------------------------------+------------------------------------+
+   | 3.  | Is accurate at periodic steady-state | Accuracy in general depends on the |
+   |     |"by design", but suffers from low     |assumptions underlying MMS. Strong  |
+   |     |accuracy in transients                |nonlinearities, strong damping, or  |
+   |     |                                      |strong forcing require higher orders|
+   |     |                                      |of truncation to match the accuracy |
+   |     |                                      |of CX-A.                            |
+   +-----+--------------------------------------+------------------------------------+
+   | 4.  | Has questionable accuracy for        | Accuracy is independent of "type"  |
+   |     |non-periodic steady-state             |of excitation. Accuracy only depends|
+   |     |(quasi-periodic, narrow-band random,  |on validity of the MMS assumptions. |
+   |     |etc.)                                 |                                    |
+   +-----+--------------------------------------+------------------------------------+
+4. In this white paper, we focus on going through the motions for CXA, MMS, and EMMS, as they are applied to a simple SDOF Duffing oscillator.
+5. Extensions to near-resonant behavior of MDOF problems is reasonably trivial.
+
+** The SDOF Duffing Oscillator
+1. The model form assumed for the oscillator is
+   #+name: eq-duffeom
+   \begin{align}
+   \ddot{x} + 2\mu \dot{x} + \omega_0^2 x + \alpha x^3 = \frac{F(t)}{2} e^{j\sigma(t)} + c.c.,
+   \end{align}
+   where the quantities \mu, \omega_0, \alpha, and x carry their standard connotations.
+2. The excitation is introduced as a modulating amplitude F(t) and a modulating phase \sigma(t), both of which are time-dependent in the general case. This description is helpful to describe quasi-periodic as well as random excitation (narrow band random is equivalent to choosing $\sigma$ as a Gaussian process).
+* Method Exploration
+1. The Complexification-Averaging (CXA) approach will be explored first, followed by the MMS.
+2. This section only deals with things I've already done, and a separate section ([[cref:sec-EMMS]]) is dedicated to EMMS.
+** Complexification Averaging (CXA)
+1. As already mentioned in [[cref:tab-ovw]], CXA begins with a definition of displacement and velocity quantities.
+2. This is done by first *restricting our attention to periodic excitation*, with $\dot{\sigma}=\Omega$.
+3. The complex dsiplacement and velocity quantities that are defined as
+   #+name: eq-cxadefs
+   \begin{align}
+      u(t) &:= \frac{a}{2} e^{j\phi(t)} + c.c.\nonumber\\
+      v(t) &:= j\Omega\frac{a}{2} e^{j\phi(t)} + c.c.
+   \end{align}
+4. The complex phase $\phi(t)$ is written as a sum of the excitation phase $\sigma(t)$ and a response phase $\beta(t)$ as
+   #+name: eq-cxaphase
+   \begin{align}
+      \phi(t) = \sigma(t) + \beta(t)\\
+      \implies \dot{\phi}(t) = \Omega + \dot{\beta}(t).\nonumber
+   \end{align}
+   1. The second equation above is a consequence of the periodic excitation assumption made earlier.
+5. We introduce a constraint at this point to equate $\dot{u}=v$. This is realized in the following manner:
+   #+name: eq-cxacons
+   \begin{align}
+     \dot{u} - v &= 0\nonumber\\
+     \implies \frac{1}{2} \left(\dot{a} + j\Omega\dot{a} + j\dot{\beta}a -
+     j\Omega\dot{a}\right) e^{j\phi} + c.c. &= 0\nonumber\\
+     \implies \left(\dot{a} + ja\dot{\beta}\right) e^{j\phi} + c.c. &=
+                                                               0\\
+     \implies \dot{a} \cos\phi - a\dot{\beta} \sin\phi &= 0.
+   \end{align}
+   1. In the final step above, the equation is converted from complex notation to fully real notation (and simplified).
+   2. [[Cref:eq-cxacons]] represents a time-varying constraint .
+6. The original equations of motion are written as,
+   #+name: eq-duffcxa
+   \begin{align}
+   \dot{v} + 2\mu v + \omega_0^2 u + \alpha u^3 = \frac{F}{2} e^{j(\Omega t+\beta)} + c.c.
+   \end{align}
+7. The relevant terms in [[cref:eq-duffcxa]] are written as,
+   #+name: eq-dufftermscxa
+   \begin{align}
+     \dot{v}(t) &= \frac{1}{2} \left(j\Omega \dot{a} - \Omega(\Omega+\dot{\beta}) a\right)
+                  e^{j\phi} + c.c.\\
+     2\mu v(t) &= j \mu \Omega a e^{j\phi} + c.c.\\
+     \omega_0^2 u(t) &= \frac{\omega_0^2}{2} a e^{j\phi} + c.c.\\
+     \alpha u(t)^3 &= \alpha\left( \frac{3a^3}{8} e^{j\phi} + \frac{a^3}{8} e^{j3\phi}
+                \right) + c.c.
+   \end{align}
+8. Combining the terms appropriately one obtains,
+   #+name: eq-cxaeq
+   \begin{align}
+     \frac{1}{2} \left(j\Omega \dot{a} - a\Omega\dot{\beta} - a(\Omega^2-\omega_0^2) + j 2 \mu \Omega a
+   + \frac{3\alpha}{4} a^3 - F e^{-j\beta} \right) e^{j\phi} +
+     \textcolor{red}{\frac{\alpha}{8} a^3 e^{j3\phi}} + c.c. = r(t)
+   \end{align}
+   1. The right hand side is set as a residue $r(t)$ which will be set to zero only in an averaged sense.
+9. We rewrite [[cref:eq-cxaeq]] in fully real coordinates as
+   #+name: eq-cxareq
+   \begin{align}
+   - \Omega a\dot{\beta} \cos\phi - \Omega\dot{a} \sin\phi - \left( (\Omega^2-\omega_0^2)a -
+     \frac{3\alpha}{4}a^3 + F\cos\beta \right) \cos\phi -\nonumber\\ \left( 2\mu\Omega a +
+     F\sin\beta\right) \sin\phi + \frac{\alpha}{4}a^3 \cos 3\phi = r(t)
+   \end{align}
+10. We now combine this with the constraint ([[cref:eq-cxacons]]) to write two equations:
+    1. $\Omega \cos \phi\times$ ([[cref:eq-cxacons]]) $- \sin \phi \times$ ([[cref:eq-cxareq]]):
+       #+latex: \footnotesize
+       #+name: eq-cxa1
+       \begin{align}
+         \Omega\dot{a} + \left( (\Omega^2-\omega_0^2)a - \frac{3\alpha}{4} a^3 + F \cos
+         \beta \right) \frac{\sin 2\phi}{2} + \left( 2\mu\Omega a + F \sin \beta \right)
+         \frac{1-\cos 2\phi}{2} - \frac{\alpha}{4} a^3 \frac{\sin 4\phi + \sin 2\phi}{2} = -r(t) \sin \phi
+       \end{align}
+       #+latex: \normalsize
+    2. $\Omega \sin \phi\times$ ([[cref:eq-cxacons]]) $+ \cos \phi \times$ ([[cref:eq-cxareq]]):
+       #+latex: \footnotesize
+       #+name: eq-cxa2
+       \begin{align}
+         -\Omega a \dot{\beta} - \left( (\Omega^2-\omega_0^2)a - \frac{3\alpha}{4} a^3 + F
+         \cos \beta \right) \frac{1+\cos 2\phi}{2} - \left( 2\mu\Omega a + F \sin \beta
+         \right) \frac{\sin 2\phi}{2} + \frac{\alpha}{4} a^3 \frac{\cos 4\phi + \cos
+         2\phi}{2} = r(t) \cos \phi
+       \end{align}
+       #+latex: \normalsize
+11. We now integrate eqs. [[cref:eq-cxa1]] & [[cref:eq-cxa2]] from $0$ to $2\pi$ and then equate the result to zero.
+    1. This is equivalent, as seen above, to equating the $\sin\phi$ and $\cos\phi$ harmonics of the residue $r(t)$ to zero.
+    2. The equations now become,
+       #+name: eq-cxafin
+       \begin{align}
+         \Omega \dot{a}_{avg} + \mu\Omega a_{avg} + \frac{(F \sin \beta)_{avg}}{2} &= 0\\  
+         -\Omega (a \dot{\beta})_{avg} - \frac{\Omega^2-\omega_0^2}{2} a_{avg} - \frac{3\alpha}{2} (a^3)_{avg} +
+         \frac{(F \cos \beta)_{avg}}{2} &= 0,
+       \end{align}
+       where the subscript $(\cdot)_{avg}$ denotes averaging over $\phi\in[0, 2\pi)$ ($a_{avg} = \frac{1}{2\pi} \int_0^{2\pi} a d\phi$, for instance).
+12. Simplifying [[cref:eq-cxafin]] leads to the final amplitude-phase equations (and replacing the averaged coordinates with the true quantities), of the form:
+    #+name: eq-cxaH1
+    \begin{align}
+      \dot{a} &= -\mu a - \frac{F}{2\Omega} \sin\beta\\
+      \dot{\beta} &= -\frac{(\Omega^2-\omega_0^2)}{2\Omega} + \frac{3\alpha}{8\Omega} a^2 - \frac{F}{2a\Omega} \cos\beta
+    \end{align}
+    1. The replacement of the averaged quantities can be justified from a perturbation standpoint. 
+13. A common way of interpreting the averaging operation is to say that the amplitude-phase dynamics are *averaged over one period of oscillation in the fast time-scale* (represented by fast-varying phase $\phi(t)$), retaining only *slow-varying components*.
+*** Additional Remarks
+1. It is unclear how to properly generalize this to non-periodic excitation. Furthering assumptions may be necessary for the averaging operations.
+2. The concept of slow-fast time decomposition is different from the concept in MMS.
+3. In Manevitch's original paper [cite:@manevitch], he writes the state-space equations in terms of the complexified variable $\psi$, then introduces multiple time-scales and decomposes the problem.
+#+begin_export latex
+\pagebreak
+#+end_export
+** Method of Multiple Scales (MMS)
+1. For the method of multiple scales, we first order the equation of motion by building into it assumptions of *small damping*, *small nonlinearity*, and *small excitation*, using an ordering parameter $\epsilon>0$:
+   #+name: eq-ordeom
+   \begin{align}
+     \ddot{x} + \epsilon 2\mu \dot{x} + \omega_0^2 x + \epsilon \alpha x^3 + \epsilon \frac{F}{2} e^{j\sigma} + c.c.
+   \end{align}
+2. In addition to the above, an additional assumption of *near-resonant excitation* is made. This is made in the following fashion:
+   #+name: eq-mmsexassum
+   \begin{align}
+     \frac{dF}{dt} &= \mathcal{O}(\epsilon)\\
+     \frac{d\sigma}{dt} &= \omega_0 + \mathcal{O}(\epsilon).
+   \end{align}
+3. No additional assumptions need to be made on the excitation.
+4. Ordered time-scales are introduced as,
+   #+name: eq-mmstscales
+   \begin{align}
+     T_0 &= t;\quad T_1 = \epsilon t;\quad\cdots \\
+     \implies \partial_t &= \partial_0 + \epsilon \partial_1 + \dots\\
+     \partial_t^2 &= \partial_0 + \epsilon 2 \partial_0\partial_1 + \dots,
+   \end{align}
+   where $\partial_t$ denotes time-derivative and $\partial_i$ (i=0,\dots) denote derivatives w.r.t. the appropriate time-scale $T_i$.
+5. The solution $x(t)$ is also expanded as
+   $$ x(T_0, T_1, \cdots) = x_0(T_0, T_1, \cdots) + \epsilon x_1(T_0, T_1, \cdots) + \cdots. $$
+6. The above are introduced into [[cref:eq-ordeom]] to write the ordered equations,
+   #+name: eq-mmsordeqs
+   \begin{alignat}{3}
+     \mathcal{O}(\epsilon^0):&\quad \partial_0^2 x_0 + \omega_0^2 x_0 &&= 0\\
+     \mathcal{O}(\epsilon^1):&\quad \partial_0^2 x_1 + \omega_0^2 x_1 &&= -2\partial_0\partial_1 x_0 - 2\mu \partial_0 x_0 - \alpha
+                                        x_0^3 + \frac{F}{2} e^{j\sigma} +
+                                        c.c..
+   \end{alignat}
+7. The *zeroth order solution* ($\mathcal{O}(\epsilon^0)$) is written as,
+   #+name: eq-mmsO0
+   \begin{align}
+     x_0 &= \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+     s.t.\quad \partial_0 a_0 &= 0,\,\text{and,}\quad \partial_0 \phi_0 = \omega_0.
+   \end{align}
+   1. The above is basically the solution for the linear homogeneous equation written using a continuous phase $\phi(t)$.
+   2. Some intermediate quantities are computed based on $x_0$ for application in the first order solution:
+      #+name: eq-mmsO0intermed
+      \begin{align}
+        \partial_0 x_0 &= j\omega_0 \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+        2 \partial_0 \partial_1 x_0 &= \left(j\omega_0 \partial_1 a_0 - \omega_0 a_0 \partial_1 \phi_0 \right)
+                        e^{j\phi_0} + c.c.\\
+        x_0^3 &= \frac{3a_0^3}{8} e^{j\phi_0} + \frac{a_0^3}{8} e^{j3\phi_0} +
+                c.c..
+      \end{align}
+8. The *first order equation* ($\mathcal{O}(\epsilon^1)$) is written as,
+   #+name: eq-mmsO1
+   \begin{align}
+     \partial_0^2 x_1 + \omega_0^2 x_1 = \left(-j\omega_0 \partial_1 a_0 + \omega_0 a_0 \partial_1 \phi_0 -j \mu
+     \omega_0 a_0 - \frac{3\alpha}{8} a_0^3 \right) e^{j\phi_0} - \frac{\alpha}{8} a_0^3
+     e^{j3\phi_0} + \frac{F}{2} e^{j\sigma} + c.c.
+   \end{align}
+   1. Recalling the *near-resonant excitation* assumption from above, the phase difference between response and excitation is set to be $\beta_0$, with $\partial_0 \beta_0=0$. Mathematically,
+      $$ \phi_0 = \sigma+\beta_0 .\quad (\implies \partial_1 \phi_0 = \partial_1 \sigma + \partial_1 \beta_0) $$
+   2. Using this, the secular term cancellation from [[cref:eq-mmsO1]] can be written as
+      #+name: eq-mmsO1secterms
+      \begin{align}
+        -j\omega_0 \partial_1 a_0 + \omega_0 a_0 \partial_1 \phi_0 -j \mu \omega_0 a_0 - \frac{3\alpha}{8} a_0^3 +
+        \frac{F}{2} e^{-j\beta_0} &= 0.
+      \end{align}
+      since the $e^{j\phi_0}$ terms represent resonant excitation.
+   3. Balancing the real and imaginary parts of [[cref:eq-mmsO1secterms]] leads to
+      #+name: eq-mmsrim
+      \begin{align}
+        \partial_1 a_0 &= -\mu a_0 - \frac{F}{2\omega_0} \sin\beta_0\\
+        \partial_1 \phi_0 &= \frac{3\alpha}{8\omega_0} a_0^2 - \frac{F}{2a_0\omega_0} \cos\beta_0.
+      \end{align}
+   4. Transforming these back to physical time by noting $\dot{a_0} = \cancel{\partial_0 a_0} + \epsilon \partial_1 a_0$ and $\dot{\phi_0} = \cancelto{\omega_0}{\partial_0 \phi_0} + \epsilon \partial_1 \phi_0$, and substituting $\omega_0=\partial_0 \sigma$, we obtain the final amplitude-phase dynamic equations:
+      #+name: eq-mmsfin
+      \begin{align}
+        \dot{a_0} &= -\epsilon \mu a_0 - \epsilon \frac{F}{2\omega_0} \sin\beta\\
+        \dot{\beta_0} &= -(\dot{\sigma}-\omega_0) + \epsilon \frac{3\alpha}{8\omega_0} a_0^3 -
+                    \epsilon \frac{F}{2a_0\omega_0} \cos\beta_0.
+      \end{align}
+** Comparing CXA and MMS
+1. The CXA & MMS equations, side-by-side, for the case of periodic excitation, is (CXA on the left, MMS on the right):
+   #+name: eq-sidbysid
+   \begin{alignat}{4}
+     \dot{a} &= -\mu a - \frac{F}{2\Omega} \sin\beta;\qquad &\dot{a} &= -\mu a -
+                                                      \frac{F}{2\omega_0}
+                                                      \sin\beta\\
+     \dot{\beta} &= -\frac{(\Omega^2-\omega_0^2)}{2\Omega} + \frac{3\alpha}{8\Omega} a^2 -
+               \frac{F}{2a\Omega} \cos\beta;\qquad &\dot{\beta} &= -(\Omega-\omega_0)+\frac{3\alpha}{8\omega_0}
+                                                a^2 - \frac{2a\omega_0} \cos\beta
+   \end{alignat}
+2. Although dimensionally identical, they are fundamentally different.
+#+latex: \pagebreak
+* Enriched MMS: A Path Forward?
+:PROPERTIES:
+:CUSTOM_ID: sec-EMMS
+:END:
+1. The EMMS approach seems promising. We introduce $p$ as the homotopy parameter, and rewrite the equations of motion as,
+   #+name: eq-homeom
+   \begin{align}
+   \ddot{x} + \Omega^2 x + p 2\mu \dot{x} + p (\omega_0^2-\Omega^2) x + p \alpha x^3 = p
+     \frac{F}{2} e^{j\Omega t} + c.c.
+   \end{align}
+2. Multiple time-scales and ordered solutions are expanded as,
+   #+name: eq-hommscales
+   \begin{align}
+     T_0 &= t;\quad T_1 = p t;\quad\cdots \\
+     \implies \partial_t &= \partial_0 + p \partial_1 + \dots\\
+     \partial_t^2 &= \partial_0 + p 2 \partial_0\partial_1 + \dots,\\
+     x(T_0, T_1, \cdots) &= x_0(T_0, T_1, \cdots) + p x_1(T_0, T_1, \cdots) + \cdots.
+   \end{align}
+3. The ordered equations in this case are:
+   #+name: eq-emmsordeqs
+   \begin{alignat}{3}
+     \mathcal{O}(p^0):&\quad \partial_0^2 x_0 + \Omega^2 x_0 &= 0\\
+     \mathcal{O}(p^1):&\quad \partial_0^2 x_1 + \Omega^2 x_1 &= -\left(2\partial_0\partial_1 x_0 + 2\mu\partial_0x_0 -
+                                     (\Omega^2-\omega_0^2)x_0 + \alpha x_0^3\right) +
+                                     \frac{F}{2} e^{j\Omega t} + c.c.
+   \end{alignat}
+4. *The zeroth order solution* is written as,
+   #+name: eq-emmsO0
+   \begin{align}
+     x_0 &= \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+     s.t.\quad \partial_0 a_0 &= 0,\,\text{and,}\quad \partial_0 \phi_0 = \Omega.
+   \end{align}
+   1. As before, we compute certain intermediate quantities to help compute the first order terms.
+      #+name: eq-emmsintq
+      \begin{align}
+        \partial_0 x_0 &= j\Omega \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+        2 \partial_0 \partial_1 x_0 &= \left(j\Omega \partial_1 a_0 - \Omega a_0 \partial_1 \phi_0 \right)
+                        e^{j\phi_0} + c.c.\\
+        x_0^3 &= \frac{3a_0^3}{8} e^{j\phi_0} + \frac{a_0^3}{8} e^{j3\phi_0} +
+                c.c..
+      \end{align}
+5. *The first order equation* is written as
+   #+name: eq-emmsO1eq
+   \begin{align}
+     \partial_0^2 x_1 + \Omega^2 x_1 = -\left(j\Omega \partial_1 a_0 - a\Omega \partial_1 \beta + j\mu\Omega a_0 -
+     \frac{(\Omega^2-\omega_0^2)}{2} a_0 + \frac{3\alpha}{8}a_0^3 - \frac{F}{2}
+     e^{-j\beta_0}\right) e^{j\phi_0} - \frac{\alpha}{8} a_0^3 e^{j3\phi_0} + c.c.,
+   \end{align}
+   where the phase $\beta_0$ is introduced the same way it was introduced for MMS above.
+6. Secular term cancellation (setting coefficient of $e^{j\phi_0}$ to zero) leads one to the slow flow equations (after noting, as before, $\dot{a_0} = \cancel{\partial_0 a_0} + p \partial_1 a_0$, and $\dot{\beta_0} = \cancel{\partial_0 \beta_0} + p \partial_1 \beta_0$)
+   #+name: eq-emmsslfleqs
+   \begin{align}
+     \dot{a_0} &= -p \mu a_0 - p \frac{F}{2\Omega} \sin\beta_0 \\
+     \dot{\beta_0} &= -p \frac{(\Omega^2-\omega_0^2)}{2\Omega} + p \frac{3\alpha}{8\Omega} a^2 - \frac{F}{2a_0\Omega} \cos\beta_0.
+   \end{align}
+7. Setting the homotopy parameter $p=1$ recovers the original system as per [[cref:eq-homeom]]. In this case, it can be observed that [[cref:eq-emmsslfleqs]] is *identical* to the slow flow equations from CXA ([[cref:eq-cxaH1]])!
+8. IMO this finding itself is very novel and potentially important.
+** Where should we go from here?
+1. One great advantage with the EMMS approach is that it can be expanded to higher orders. *What does a better approximation of CXA look like?*
+2. How applicable is the EMMS approach for *non-periodic excitations* ? Two examples are given below:
+   1. *Bi-periodic excitation*:
+      1. Suppose excitation is $f_{ex}(t) = \cos \Omega_1 t + \cos \Omega_2 t$, it is necessary to represent this is as a modulated excitation.
+      2. Such a representation is not unique, but for $\Omega_1 \approx \Omega_2$, a strong candidate is,
+         $$ f_{ex}(t) = \underbrace{\cos\left(\frac{\Omega_1-\Omega_2}{2}t\right)}_{F(t)}
+         e^{j \overbrace{\frac{\Omega_1+\Omega_2}{2}t}^{\sigma(t)} } + c.c. $$
+      3. $f(t)$ is slowly varying, so it makes sense to have it as the modulation, and $\sigma(t)$ is fast-varying, so it makes sense to have it as the phase.
+   2. *Narrow-band Random Excitation*:
+      1. A narrow band random signal can be constructed by choosing $F(t)=F$ (constant) and $\sigma(t)=\Omega t + \gamma w(t)$, where $w(t)$ is a wiener process.
+      2. The stochastic $sigma(t)$ can be generated through the following $\dot{\sigma}(t)$:
+         $$ \dot{\sigma}(t) = \Omega + \gamma \eta(t), $$
+         where $\mathbb{E} \left[\eta(t)\right] = 0$ and $\mathbb{E} \left[ \eta(t) \eta(t') \right] = \delta(t-t')$.
+      3. In the above, $\eta(t)$ is a standard normal variable that is drawn randomly at each time instant. An "Ito integral" of $\eta(t)$ is the wiener process.
+      4. $\Omega$ is the center frequency and $\gamma$ controls the bandwidth of the random excitation.
+      5. This representation is amenable to the MMS equations above, but how this can be done with CXA is unclear.
+      6. With EMMS, however, this is rather straightforward: We choose the center frequency $\Omega$ as the natural frequency for the $p=0$ system, and consider $\gamma w(t)$ as a slow-time perturbation to this phase.
+      7. It will be interesting to see how these compare here.
+3. All the approaches above are applicable to cases where the nonlinear system is characterized in terms of its nonlinear normal modes. In this case, these approaches help us synthesize the nonlinear near-resonant behavior.
+   #+latex: \pagebreak
+** EMMS Expanded to second order (from Maxima)
+1. I also carried out expansion of EMMS to second order.
+2. Here are the final relationships.
+   1. Zeroth Order ($\mathcal{O}(p^0)$):
+      #+name: eq-emms0
+      \begin{align}
+        \frac{\partial a_0}{\partial T_0} &= 0\nonumber\\
+        \frac{\partial \beta_0}{\partial T_0} &= 0
+      \end{align}
+   2. First Order ($\mathcal{O}(p^1)$):
+      #+name: eq-emms1
+      \begin{align}
+        \frac{\partial a_0}{\partial T_1} &= -\mu a_0 - \frac{F}{2\Omega} \sin \beta_0 \nonumber\\
+        \frac{\partial \beta_0}{\partial T_1} &= -\frac{(\Omega^2-\omega_0^2)}{2\Omega} + \frac{3\alpha}{8\Omega}a_0^2 -
+                              \frac{F}{2\Omega a_0}\cos \beta_0 -\partial_1 \sigma
+      \end{align}
+   3. Second Order ($\mathcal{O}(p^2)$):
+      #+name: eq-emms2
+      \begin{align}
+        \frac{\partial a_0}{\partial T_2} =& \frac{F\mu}{4\Omega^2} \cos \beta_0 + 
+                               (8\Omega\partial_1 \sigma-4(\Omega^2-\omega_0^2)+9\alpha a_0^2)
+                               \frac{F}{32\Omega^3} \sin \beta_0 +
+                               \frac{3\alpha\mu}{8\Omega^2} a_0^3 \nonumber\\
+        \frac{\partial \beta_0}{\partial T_2} =& (8\Omega\partial_1 \sigma-4(\Omega^2-\omega_0^2)+9\alpha a_0^2)
+                               \frac{F}{32\Omega^3 a_0} \cos \beta_0 - \frac{F\mu}{4\Omega^2 a_0}
+                               \sin \beta_0 \nonumber\\
+                             & -\frac{9\alpha^2}{128\Omega^3} a_0^4 +
+                               \frac{3\alpha(\Omega^2-\omega_0^2)}{16\Omega^3} a_0^2 -
+                               \frac{{(\Omega^2-\omega_0^2)}^2}{8\Omega^3} - \frac{\mu^2}{2\Omega} - \partial_2 \sigma
+      \end{align}
+3. Unlike before, explicit slow time-dependence of the excitation $\sigma$ is retained in the above forms ($\partial_1 \sigma$, $\partial_2 \sigma$).
+4. At first order a reasonable approximation for this is $p \partial_1 \sigma=\dot{\sigma}-\Omega + \cancel{\mathcal{O}(p^2)}$.
+5. At second order, however, since the $\mathcal{O}(p^2)$ terms can't be canceled, one has to make simplifying assumptions.
+   1. One possibility is to assume that $\dot{\sigma} = \Omega + p \partial_1 \sigma$, assuming $\partial_2 \sigma=0$. In other words, all variations of the excitation phase from the "center frequency" $\Omega$ occur as first order perturbations and there exists no second order perturbations.
+   2. Under this assumption, the amplitude-phase dynamics are represented as,
+      #+name: eq-emms2_simp
+      \begin{align}
+        \dot{a_0} =& -\textcolor{red}{p}\biggl(\mu a_0 + \frac{3F}{4\Omega}\sin \beta_0 - \dot{\sigma}
+                   \frac{F}{4\Omega^2}\sin \beta_0\biggr) +\nonumber\\
+                 & \textcolor{red}{p^2} \biggl( \frac{3\alpha\mu}{8\Omega^2} a_0^3 +
+                   \frac{F\mu}{4\Omega^2}\cos \beta_0 + (9\alpha a_0^3 - 4(\Omega^2-\omega_0^2))
+                   \frac{F}{32\Omega^3} \sin \beta_0 \biggr)\nonumber\\
+                   \dot{\beta_0} =& (\Omega-\dot{\sigma}) + \textcolor{red}{p}\biggl( \frac{\omega_0^2-\Omega^2}{2\Omega} +
+                                \frac{3\alpha}{8\Omega}a_0^2 -\frac{3F}{4\Omega a_0}\cos \beta_0 + \dot{\sigma}
+                                \frac{F}{4\Omega^2 a_0}\cos \beta_0\biggr) +\nonumber\\
+                 & \textcolor{red}{p^2} \biggl( -\frac{{(\Omega^2-\omega_0^2)}^2}{8\Omega^3} - \frac{\mu^2}{2\Omega}
+                   - \frac{3\alpha}{16\Omega^3}(\Omega^2-\omega_0^2)a_0^2 -
+                   \frac{9\alpha^2}{128\Omega^3}a_0^4 +\nonumber\\
+                 &(3\alpha a_0^2-4(\Omega^2-\omega_0^2)) \frac{F}{32\Omega^3 a_0}\cos \beta_0 -
+                   \frac{F\mu}{4\Omega^2 a_0}\sin \beta_0\biggr) 
+      \end{align}
+
+#+latex: \pagebreak \appendix
+* COMMENT Complexification Averaging (CXA): Old derivation (missing averaging concept)
+1. As already mentioned in table [[cref:tab-ovw]], CXA begins with a definition of displacement and velocity quantities.
+2. This is done by first *restricting our attention to periodic excitation*, with $\dot{\sigma}=\Omega$.
+3. The complex quantities that are defined are,
+   #+name: eq-cxadefs1
+   \begin{align}
+      u(t) &:= \frac{a}{2} e^{j\phi(t)} + c.c.\nonumber\\
+      v(t) &:= j\Omega\frac{a}{2} e^{j\phi(t)} + c.c.
+   \end{align}
+4. The complex phase $\phi(t)$ is written as a sum of the excitation phase $\sigma(t)$ and a response phase $\beta(t)$ as
+   #+name: eq-cxaphase1
+   \begin{align}
+      \phi(t) = \sigma(t) + \beta(t)\\
+      \implies \dot{\phi}(t) = \Omega + \dot{\beta}(t).\nonumber
+   \end{align}
+5. The second equation in [[cref:eq-cxaphase1]] is a consequence of the periodic excitation assumption made earlier.
+6. A complex variable, $\psi$ is introduced at this point as,
+   #+name: eq-cxapsi1
+   \begin{align}
+   \psi=u+\frac{v}{j\Omega} \implies v = j\Omega(\psi-u).
+   \end{align}
+7. We use this complex quantity to estimate the relevant quantities for the equations of motion:
+   1. *The acceleration* is estimated based on [[cref:eq-cxapsi1]].
+      \begin{align}
+        \ddot{x} &= j\Omega(\dot{\psi}-\cancelto{v}{\dot{u}})\nonumber\\
+                 &= j\Omega(\dot{u} + \frac{\dot{v}}{j\Omega} - v).\label{eq-cxaaccel1}
+      \end{align}
+      Note that $\dot{u}$ is replaced with $v$ in the first step of the above, but is retained as is in the second step.
+      This is justified using a multi-time-scale argument in [cite:@manevitch]. *But I personally think this is quite shaky without further justification.*
+   2. *The displacement* is taken as $u(t)$ and *the velocity* is taken as $v(t)$.
+8. Using the above, we write the equations of motion as
+   #+name: eq-duffcxa1
+   \begin{align}
+     j\Omega(\dot{u}-v) + \dot{v} + 2\mu v(t) + \omega_0^2 u + \alpha u^3 = \frac{F}{2}
+     e^{j\sigma(t)} + c.c.
+   \end{align}
+9. The relevant terms in [[cref:eq-duffcxa1]] are written as,
+   #+name: eq-dufftermscxa1
+   \begin{align}
+     \dot{u}(t) &= \frac{1}{2} \left(\dot{a} + ja(\Omega+\dot{\beta})\right) e^{j\phi} + c.c.\\
+     \dot{v}(t) &= \frac{1}{2} \left(j\Omega \dot{a} - \Omega(\Omega+\dot{\beta}) a\right)
+                  e^{j\phi} + c.c.\\
+     2\mu v(t) &= j \mu \Omega a e^{j\phi} + c.c.\\
+     \omega_0^2 u(t) &= \frac{\omega_0^2}{2} a e^{j\phi} + c.c.\\
+     \alpha u(t)^3 &= \alpha\left( \frac{3a^3}{8} e^{j\phi} + \frac{a^3}{8} e^{j3\phi}
+                \right) + c.c.
+   \end{align}
+10. Combining the terms appropriately one obtains,
+    #+name: eq-cxaeq1
+    \begin{align}
+      \left(j\Omega \dot{a} - a\Omega\dot{\beta} - \frac{a\Omega^2}{2} + j \mu \Omega a + \frac{\omega_0^2}{2} a
+    + \frac{3\alpha}{8} a^3 - \frac{F}{2} e^{-j\beta} \right) e^{j\phi} + \textcolor{red}{\frac{\alpha}{8} a^3
+      e^{j3\phi}} = 0
+    \end{align}
+11. We transform [[cref:eq-cxaeq1]] to the Fourier domain and balance only the first harmonic (ignoring the third harmonic term).
+    #+name: eq-cxaH11
+    \begin{align}
+      \dot{a} &= -\mu a - \frac{F}{2\Omega} \sin\beta\\
+      \dot{\beta} &= -\frac{(\Omega^2-\omega_0^2)}{2\Omega} + \frac{3\alpha}{8\Omega} a^2 - \frac{F}{2a\Omega} \cos\beta
+    \end{align}
+12. The above equations describe the dynamics of the Duffing oscillator in terms of amplitude and phase quantities.
+13. A common way of interpreting this is to say that $\sigma(t)$ is a *fast-varying excitation phase*, and the response amplitude $a$ and phase $\beta$ are *slow-varying quantities*, thereby making the above the *slow manifold dynamics* of the oscillator. 
+** COMMENT Additional Remarks
+1. It is unclear how to properly generalize this to non-periodic excitation without significantly complicating everything.
+2. There is an issue with the definition of acceleration in [[cref:eq-cxaaccel1]].
+3. In Manevitch's original paper [cite:@manevitch], he writes the state-space equations in terms of the complexified variable $\psi$, then introduces multiple time-scales and decomposes the problem.
+
+#+latex: \pagebreak
+* References
+#+CITE_EXPORT: csl ieee.csl
+#+PRINT_BIBLIOGRAPHY: References
+
+#+begin_src inline-js
+  // Collapse on Click //////////////////////////////////////////////////////////
+  var secs = document.querySelectorAll('[id^="outline-container-"]');
+
+  var ocrgx = /^outline-text-(?=.*[5-9]\d*$).*$/;
+  var rcns = document.querySelectorAll('[class^="outline-text-"]');
+  var rcnsf = Array.from(rcns).filter(function (element)
+                                    {return ocrgx.test(element.className);});
+  var rcprs = rcnsf.map(function(e) {return e.parentElement;});
+
+  Array.from(secs).forEach(function(sec) {
+      var cln = sec.className.substr(8);
+      var ttl = sec.getElementsByTagName("h"+cln)[0];
+      var cnt = sec.getElementsByClassName("outline-text-"+cln)[0];
+
+      ttl.style.cursor = 'pointer';
+      ttl.addEventListener("click", function (e) {
+          cnt.style.display = (cnt.style.display=='')?'none':'';});
+      ttl.addEventListener("mouseover", function(){ttl.style.color="red";});
+      ttl.addEventListener("mouseout", function(){ttl.style.color="black";});
+  });
+
+  for (var i = 0; i < rcprs.length; i++) {
+    (function(index) {
+        rcprs[index].style.cursor = 'pointer';
+        rcprs[index].addEventListener("click", function (e) {
+            rcnsf[index].style.display = (rcnsf[index].style.display=='')?'none':'';});
+      })(i);
+  }
+
+  // Collapse all on button press ///////////////////////////////////////////////
+  var stat = '';
+  var btn = document.getElementsByClassName("tglv");
+  function togglevisib(e=1) {
+      for (var i = 0; i < rcns.length; i++)
+          rcns[i].style.display = (stat=='')?'none':'';
+      for (var j = 0; j < btn.length; j++)
+          btn[j].value = (stat=='')?'show all':'hide all';    
+      stat = (stat=='')?'none':'';
+  }
+  for (var i = 0; i < btn.length; i++) btn[i].addEventListener("click", togglevisib);
+  document.addEventListener('keypress', function(e) {if (e.which==116) togglevisib();});
+
+  togglevisib();
+#+end_src

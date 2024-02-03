@@ -3,6 +3,8 @@
 
 Here I have my pages
 
+* A White Paper on EMMS
++ Here is the Page: [[https://nidish96.github.io/mypages/EMMSWHITEPAPER/EMMSWhitePaper.html]]
 * SNMT Approaches Applied to Phase Noise Excitation
 + Here is the page: [[https://nidish96.github.io/mypages/STOCHNNMREP/rep1.html]]
 

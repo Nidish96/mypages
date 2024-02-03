@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-02-03 Sat 08:39 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>White Paper: CXA, MMS, &amp; EMMS Applied to the SDOF Duffing Oscillator</title>
+<meta name="author" content="Nidish Narayanaa Balaji" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+        <style>
+        /* From: https://endlessparentheses.com/public/css/endless.css */
+        /* See also: https://meta.superuser.com/questions/4788/css-for-the-new-kbd-style */
+        kbd
+        {
+          -moz-border-radius: 6px;
+          -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          -webkit-border-radius: 6px;
+          -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          background-color: #f7f7f7;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          color: #333;
+          display: inline-block;
+          font-family: 'Droid Sans Mono', monospace;
+          font-size: 80%;
+          font-weight: normal;
+          line-height: inherit;
+          margin: 0 .1em;
+          padding: .08em .4em;
+          text-shadow: 0 1px 0 #fff;
+          word-spacing: -4px;
+        
+          box-shadow: 2px 2px 2px #222; /* MA: An extra I've added. */
+        }
+        </style>
+        <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/tooltipster.bundle.min.css"/>
+        
+        <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-punk.min.css" />
+        
+        <script type="text/javascript">
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape('%3Cscript src="https://code.jquery.com/jquery-1.10.0.min.js"%3E%3C/script%3E'));
+            }
+        </script>
+        
+         <script type="text/javascript"            src="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+        
+          <script>
+                 $(document).ready(function() {
+                     $('.tooltip').tooltipster({
+                         theme: 'tooltipster-punk',
+                         contentAsHTML: true,
+                         animation: 'grow',
+                         delay: [100,500],
+                         // trigger: 'click'
+                         trigger: 'custom',
+                         triggerOpen: {
+                             mouseenter: true
+                         },
+                         triggerClose: {
+                             originClick: true,
+                             scroll: true
+                         }
+         });
+                 });
+             </script>
+        
+        <style>
+           abbr {color: red;}
+        
+           .tooltip { border-bottom: 1px dotted #000;
+                      color:red;
+                      text-decoration: none;}
+        </style>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">White Paper: CXA, MMS, &amp; EMMS Applied to the SDOF Duffing Oscillator</h1>
+<div id="outline-container-sec-intro" class="outline-2">
+<h2 id="sec-intro"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-sec-intro">
+<ol class="org-ol">
+<li>The purpose of this white paper is to clarify the similarities across Complexification Averaging (CX-A), Method of Multiple Scales (MMS), and Enriched MMS (EMMS).</li>
+<li>The objective here is to <b>decompose the dynamics of a nonlinear oscillator into amplitude and phase coordinates</b>.</li>
+<li><p>
+Both CXA and MMS provide methods for this, with the following remarks
+</p>
+<!-- This HTML table template is generated by emacs 29.1 -->
+<table border="1">
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;Sno&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;Complexification&nbsp;Averaging&nbsp;(CXA)&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;Method&nbsp;of&nbsp;Multiple&nbsp;Scales&nbsp;(MMS)&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;1.&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Starts&nbsp;from&nbsp;a&nbsp;rather&nbsp;arbitrarily&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      defined&nbsp;"complexified&nbsp;coordinates"&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Has&nbsp;a&nbsp;more&nbsp;natural&nbsp;starting&nbsp;point,&nbsp;<br />
+      rooted&nbsp;in&nbsp;perturbation&nbsp;calculus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;2.&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Conducts&nbsp;"averaging"&nbsp;by&nbsp;integrating&nbsp;&nbsp;<br />
+      the&nbsp;resulting&nbsp;equations&nbsp;over&nbsp;one&nbsp;time&nbsp;<br />
+      period&nbsp;to&nbsp;derive&nbsp;the&nbsp;slow&nbsp;flow&nbsp;eqns&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Conducts&nbsp;secular&nbsp;term&nbsp;cancellation&nbsp;<br />
+      to&nbsp;derive&nbsp;the&nbsp;slow&nbsp;flow&nbsp;eqns.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;3.&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Is&nbsp;accurate&nbsp;at&nbsp;periodic&nbsp;steady-state&nbsp;<br />
+      "by&nbsp;design",&nbsp;but&nbsp;suffers&nbsp;from&nbsp;low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      accuracy&nbsp;in&nbsp;transients&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Accuracy&nbsp;in&nbsp;general&nbsp;depends&nbsp;on&nbsp;the&nbsp;<br />
+      assumptions&nbsp;underlying&nbsp;MMS.&nbsp;Strong&nbsp;&nbsp;<br />
+      nonlinearities,&nbsp;strong&nbsp;damping,&nbsp;or&nbsp;&nbsp;<br />
+      strong&nbsp;forcing&nbsp;require&nbsp;higher&nbsp;orders<br />
+      of&nbsp;truncation&nbsp;to&nbsp;match&nbsp;the&nbsp;accuracy&nbsp;<br />
+      of&nbsp;CX-A.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;4.&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Has&nbsp;questionable&nbsp;accuracy&nbsp;for&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      non-periodic&nbsp;steady-state&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      (quasi-periodic,&nbsp;narrow-band&nbsp;random,&nbsp;&nbsp;<br />
+      etc.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;Accuracy&nbsp;is&nbsp;independent&nbsp;of&nbsp;"type"&nbsp;&nbsp;<br />
+      of&nbsp;excitation.&nbsp;Accuracy&nbsp;only&nbsp;depends<br />
+      on&nbsp;validity&nbsp;of&nbsp;the&nbsp;MMS&nbsp;assumptions.&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+</table></li>
+<li>In this white paper, we focus on going through the motions for CXA, MMS, and EMMS, as they are applied to a simple SDOF Duffing oscillator.</li>
+<li>Extensions to near-resonant behavior of MDOF problems is reasonably trivial.</li>
+</ol>
+</div>
+
+<div id="outline-container-org6cb1b54" class="outline-3">
+<h3 id="org6cb1b54"><span class="section-number-3">1.1.</span> The SDOF Duffing Oscillator</h3>
+<div class="outline-text-3" id="text-1-1">
+<ol class="org-ol">
+<li><p>
+The model form assumed for the oscillator is
+</p>
+\begin{align}
+\label{eq-duffeom}
+\ddot{x} + 2\mu \dot{x} + \omega_0^2 x + \alpha x^3 = \frac{F(t)}{2} e^{j\sigma(t)} + c.c.,
+\end{align}
+<p>
+where the quantities &mu;, &omega;<sub>0</sub>, &alpha;, and x carry their standard connotations.
+</p></li>
+<li>The excitation is introduced as a modulating amplitude F(t) and a modulating phase &sigma;(t), both of which are time-dependent in the general case. This description is helpful to describe quasi-periodic as well as random excitation (narrow band random is equivalent to choosing \(\sigma\) as a Gaussian process).</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org278dc5b" class="outline-2">
+<h2 id="org278dc5b"><span class="section-number-2">2.</span> Method Exploration</h2>
+<div class="outline-text-2" id="text-2">
+<ol class="org-ol">
+<li>The Complexification-Averaging (CXA) approach will be explored first, followed by the MMS.</li>
+<li>This section only deals with things I've already done, and a separate section (sec. <a href="#sec-EMMS">3</a>) is dedicated to EMMS.</li>
+</ol>
+</div>
+<div id="outline-container-orgf580a5d" class="outline-3">
+<h3 id="orgf580a5d"><span class="section-number-3">2.1.</span> Complexification Averaging (CXA)</h3>
+<div class="outline-text-3" id="text-2-1">
+<ol class="org-ol">
+<li>As already mentioned in tab. <a href="#tab-ovw">1</a>, CXA begins with a definition of displacement and velocity quantities.</li>
+<li>This is done by first <b>restricting our attention to periodic excitation</b>, with \(\dot{\sigma}=\Omega\).</li>
+<li><p>
+The complex dsiplacement and velocity quantities that are defined as
+</p>
+\begin{align}
+\label{eq-cxadefs}
+   u(t) &:= \frac{a}{2} e^{j\phi(t)} + c.c.\nonumber\\
+   v(t) &:= j\Omega\frac{a}{2} e^{j\phi(t)} + c.c.
+\end{align}</li>
+<li><p>
+The complex phase \(\phi(t)\) is written as a sum of the excitation phase \(\sigma(t)\) and a response phase \(\beta(t)\) as
+</p>
+\begin{align}
+\label{eq-cxaphase}
+   \phi(t) = \sigma(t) + \beta(t)\\
+   \implies \dot{\phi}(t) = \Omega + \dot{\beta}(t).\nonumber
+\end{align}
+<ol class="org-ol">
+<li>The second equation above is a consequence of the periodic excitation assumption made earlier.</li>
+</ol></li>
+<li><p>
+We introduce a constraint at this point to equate \(\dot{u}=v\). This is realized in the following manner:
+</p>
+\begin{align}
+\label{eq-cxacons}
+  \dot{u} - v &= 0\nonumber\\
+  \implies \frac{1}{2} \left(\dot{a} + j\Omega\dot{a} + j\dot{\beta}a -
+  j\Omega\dot{a}\right) e^{j\phi} + c.c. &= 0\nonumber\\
+  \implies \left(\dot{a} + ja\dot{\beta}\right) e^{j\phi} + c.c. &=
+                                                            0\\
+  \implies \dot{a} \cos\phi - a\dot{\beta} \sin\phi &= 0.
+\end{align}
+<ol class="org-ol">
+<li>In the final step above, the equation is converted from complex notation to fully real notation (and simplified).</li>
+<li>Eq. \ref{eq-cxacons} represents a time-varying constraint .</li>
+</ol></li>
+<li><p>
+The original equations of motion are written as,
+</p>
+\begin{align}
+\label{eq-duffcxa}
+\dot{v} + 2\mu v + \omega_0^2 u + \alpha u^3 = \frac{F}{2} e^{j(\Omega t+\beta)} + c.c.
+\end{align}</li>
+<li><p>
+The relevant terms in eq. \ref{eq-duffcxa} are written as,
+</p>
+\begin{align}
+\label{eq-dufftermscxa}
+  \dot{v}(t) &= \frac{1}{2} \left(j\Omega \dot{a} - \Omega(\Omega+\dot{\beta}) a\right)
+               e^{j\phi} + c.c.\\
+  2\mu v(t) &= j \mu \Omega a e^{j\phi} + c.c.\\
+  \omega_0^2 u(t) &= \frac{\omega_0^2}{2} a e^{j\phi} + c.c.\\
+  \alpha u(t)^3 &= \alpha\left( \frac{3a^3}{8} e^{j\phi} + \frac{a^3}{8} e^{j3\phi}
+             \right) + c.c.
+\end{align}</li>
+<li><p>
+Combining the terms appropriately one obtains,
+</p>
+\begin{align}
+\label{eq-cxaeq}
+  \frac{1}{2} \left(j\Omega \dot{a} - a\Omega\dot{\beta} - a(\Omega^2-\omega_0^2) + j 2 \mu \Omega a
++ \frac{3\alpha}{4} a^3 - F e^{-j\beta} \right) e^{j\phi} +
+  \textcolor{red}{\frac{\alpha}{8} a^3 e^{j3\phi}} + c.c. = r(t)
+\end{align}
+<ol class="org-ol">
+<li>The right hand side is set as a residue \(r(t)\) which will be set to zero only in an averaged sense.</li>
+</ol></li>
+<li><p>
+We rewrite eq. \ref{eq-cxaeq} in fully real coordinates as
+</p>
+\begin{align}
+\label{eq-cxareq}
+- \Omega a\dot{\beta} \cos\phi - \Omega\dot{a} \sin\phi - \left( (\Omega^2-\omega_0^2)a -
+  \frac{3\alpha}{4}a^3 + F\cos\beta \right) \cos\phi -\nonumber\\ \left( 2\mu\Omega a +
+  F\sin\beta\right) \sin\phi + \frac{\alpha}{4}a^3 \cos 3\phi = r(t)
+\end{align}</li>
+<li>We now combine this with the constraint (eq. \ref{eq-cxacons}) to write two equations:
+<ol class="org-ol">
+<li><p>
+\(\Omega \cos \phi\times\) (eq. \ref{eq-cxacons}) \(- \sin \phi \times\) (eq. \ref{eq-cxareq}):
+</p>
+\begin{align}
+\label{eq-cxa1}
+  \Omega\dot{a} + \left( (\Omega^2-\omega_0^2)a - \frac{3\alpha}{4} a^3 + F \cos
+  \beta \right) \frac{\sin 2\phi}{2} + \left( 2\mu\Omega a + F \sin \beta \right)
+  \frac{1-\cos 2\phi}{2} - \frac{\alpha}{4} a^3 \frac{\sin 4\phi + \sin 2\phi}{2} = -r(t) \sin \phi
+\end{align}</li>
+<li><p>
+\(\Omega \sin \phi\times\) (eq. \ref{eq-cxacons}) \(+ \cos \phi \times\) (eq. \ref{eq-cxareq}):
+</p>
+\begin{align}
+\label{eq-cxa2}
+  -\Omega a \dot{\beta} - \left( (\Omega^2-\omega_0^2)a - \frac{3\alpha}{4} a^3 + F
+  \cos \beta \right) \frac{1+\cos 2\phi}{2} - \left( 2\mu\Omega a + F \sin \beta
+  \right) \frac{\sin 2\phi}{2} + \frac{\alpha}{4} a^3 \frac{\cos 4\phi + \cos
+  2\phi}{2} = r(t) \cos \phi
+\end{align}</li>
+</ol></li>
+<li>We now integrate eqs. eq. \ref{eq-cxa1} &amp; eq. \ref{eq-cxa2} from \(0\) to \(2\pi\) and then equate the result to zero.
+<ol class="org-ol">
+<li>This is equivalent, as seen above, to equating the \(\sin\phi\) and \(\cos\phi\) harmonics of the residue \(r(t)\) to zero.</li>
+<li><p>
+The equations now become,
+</p>
+\begin{align}
+\label{eq-cxafin}
+  \Omega \dot{a}_{avg} + \mu\Omega a_{avg} + \frac{(F \sin \beta)_{avg}}{2} &= 0\\  
+  -\Omega (a \dot{\beta})_{avg} - \frac{\Omega^2-\omega_0^2}{2} a_{avg} - \frac{3\alpha}{2} (a^3)_{avg} +
+  \frac{(F \cos \beta)_{avg}}{2} &= 0,
+\end{align}
+<p>
+where the subscript \((\cdot)_{avg}\) denotes averaging over \(\phi\in[0, 2\pi)\) (\(a_{avg} = \frac{1}{2\pi} \int_0^{2\pi} a d\phi\), for instance).
+</p></li>
+</ol></li>
+<li><p>
+Simplifying eq. \ref{eq-cxafin} leads to the final amplitude-phase equations (and replacing the averaged coordinates with the true quantities), of the form:
+</p>
+\begin{align}
+\label{eq-cxaH1}
+  \dot{a} &= -\mu a - \frac{F}{2\Omega} \sin\beta\\
+  \dot{\beta} &= -\frac{(\Omega^2-\omega_0^2)}{2\Omega} + \frac{3\alpha}{8\Omega} a^2 - \frac{F}{2a\Omega} \cos\beta
+\end{align}
+<ol class="org-ol">
+<li>The replacement of the averaged quantities can be justified from a perturbation standpoint.</li>
+</ol></li>
+<li>A common way of interpreting the averaging operation is to say that the amplitude-phase dynamics are <b>averaged over one period of oscillation in the fast time-scale</b> (represented by fast-varying phase \(\phi(t)\)), retaining only <b>slow-varying components</b>.</li>
+</ol>
+</div>
+<div id="outline-container-org39efbbf" class="outline-4">
+<h4 id="org39efbbf"><span class="section-number-4">2.1.1.</span> Additional Remarks</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ol class="org-ol">
+<li>It is unclear how to properly generalize this to non-periodic excitation. Furthering assumptions may be necessary for the averaging operations.</li>
+<li>The concept of slow-fast time decomposition is different from the concept in MMS.</li>
+<li>In Manevitch's original paper <a href="#citeproc_bib_item_1">[1]</a>, he writes the state-space equations in terms of the complexified variable \(\psi\), then introduces multiple time-scales and decomposes the problem.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org0468f4b" class="outline-3">
+<h3 id="org0468f4b"><span class="section-number-3">2.2.</span> Method of Multiple Scales (MMS)</h3>
+<div class="outline-text-3" id="text-2-2">
+<ol class="org-ol">
+<li><p>
+For the method of multiple scales, we first order the equation of motion by building into it assumptions of <b>small damping</b>, <b>small nonlinearity</b>, and <b>small excitation</b>, using an ordering parameter \(\epsilon>0\):
+</p>
+\begin{align}
+\label{eq-ordeom}
+  \ddot{x} + \epsilon 2\mu \dot{x} + \omega_0^2 x + \epsilon \alpha x^3 + \epsilon \frac{F}{2} e^{j\sigma} + c.c.
+\end{align}</li>
+<li><p>
+In addition to the above, an additional assumption of <b>near-resonant excitation</b> is made. This is made in the following fashion:
+</p>
+\begin{align}
+\label{eq-mmsexassum}
+  \frac{dF}{dt} &= \mathcal{O}(\epsilon)\\
+  \frac{d\sigma}{dt} &= \omega_0 + \mathcal{O}(\epsilon).
+\end{align}</li>
+<li>No additional assumptions need to be made on the excitation.</li>
+<li><p>
+Ordered time-scales are introduced as,
+</p>
+\begin{align}
+\label{eq-mmstscales}
+  T_0 &= t;\quad T_1 = \epsilon t;\quad\cdots \\
+  \implies \partial_t &= \partial_0 + \epsilon \partial_1 + \dots\\
+  \partial_t^2 &= \partial_0 + \epsilon 2 \partial_0\partial_1 + \dots,
+\end{align}
+<p>
+where \(\partial_t\) denotes time-derivative and \(\partial_i\) (i=0,&hellip;) denote derivatives w.r.t. the appropriate time-scale \(T_i\).
+</p></li>
+<li>The solution \(x(t)\) is also expanded as
+\[ x(T_0, T_1, \cdots) = x_0(T_0, T_1, \cdots) + \epsilon x_1(T_0, T_1, \cdots) + \cdots. \]</li>
+<li><p>
+The above are introduced into eq. \ref{eq-ordeom} to write the ordered equations,
+</p>
+\begin{alignat}{3}
+\label{eq-mmsordeqs}
+  \mathcal{O}(\epsilon^0):&\quad \partial_0^2 x_0 + \omega_0^2 x_0 &&= 0\\
+  \mathcal{O}(\epsilon^1):&\quad \partial_0^2 x_1 + \omega_0^2 x_1 &&= -2\partial_0\partial_1 x_0 - 2\mu \partial_0 x_0 - \alpha
+                                     x_0^3 + \frac{F}{2} e^{j\sigma} +
+                                     c.c..
+\end{alignat}</li>
+<li><p>
+The <b>zeroth order solution</b> (\(\mathcal{O}(\epsilon^0)\)) is written as,
+</p>
+\begin{align}
+\label{eq-mmsO0}
+  x_0 &= \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+  s.t.\quad \partial_0 a_0 &= 0,\,\text{and,}\quad \partial_0 \phi_0 = \omega_0.
+\end{align}
+<ol class="org-ol">
+<li>The above is basically the solution for the linear homogeneous equation written using a continuous phase \(\phi(t)\).</li>
+<li><p>
+Some intermediate quantities are computed based on \(x_0\) for application in the first order solution:
+</p>
+\begin{align}
+\label{eq-mmsO0intermed}
+  \partial_0 x_0 &= j\omega_0 \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+  2 \partial_0 \partial_1 x_0 &= \left(j\omega_0 \partial_1 a_0 - \omega_0 a_0 \partial_1 \phi_0 \right)
+                  e^{j\phi_0} + c.c.\\
+  x_0^3 &= \frac{3a_0^3}{8} e^{j\phi_0} + \frac{a_0^3}{8} e^{j3\phi_0} +
+          c.c..
+\end{align}</li>
+</ol></li>
+<li><p>
+The <b>first order equation</b> (\(\mathcal{O}(\epsilon^1)\)) is written as,
+</p>
+\begin{align}
+\label{eq-mmsO1}
+  \partial_0^2 x_1 + \omega_0^2 x_1 = \left(-j\omega_0 \partial_1 a_0 + \omega_0 a_0 \partial_1 \phi_0 -j \mu
+  \omega_0 a_0 - \frac{3\alpha}{8} a_0^3 \right) e^{j\phi_0} - \frac{\alpha}{8} a_0^3
+  e^{j3\phi_0} + \frac{F}{2} e^{j\sigma} + c.c.
+\end{align}
+<ol class="org-ol">
+<li>Recalling the <b>near-resonant excitation</b> assumption from above, the phase difference between response and excitation is set to be \(\beta_0\), with \(\partial_0 \beta_0=0\). Mathematically,
+\[ \phi_0 = \sigma+\beta_0 .\quad (\implies \partial_1 \phi_0 = \partial_1 \sigma + \partial_1 \beta_0) \]</li>
+<li><p>
+Using this, the secular term cancellation from eq. \ref{eq-mmsO1} can be written as
+</p>
+\begin{align}
+\label{eq-mmsO1secterms}
+  -j\omega_0 \partial_1 a_0 + \omega_0 a_0 \partial_1 \phi_0 -j \mu \omega_0 a_0 - \frac{3\alpha}{8} a_0^3 +
+  \frac{F}{2} e^{-j\beta_0} &= 0.
+\end{align}
+<p>
+since the \(e^{j\phi_0}\) terms represent resonant excitation.
+</p></li>
+<li><p>
+Balancing the real and imaginary parts of eq. \ref{eq-mmsO1secterms} leads to
+</p>
+\begin{align}
+\label{eq-mmsrim}
+  \partial_1 a_0 &= -\mu a_0 - \frac{F}{2\omega_0} \sin\beta_0\\
+  \partial_1 \phi_0 &= \frac{3\alpha}{8\omega_0} a_0^2 - \frac{F}{2a_0\omega_0} \cos\beta_0.
+\end{align}</li>
+<li><p>
+Transforming these back to physical time by noting \(\dot{a_0} = \cancel{\partial_0 a_0} + \epsilon \partial_1 a_0\) and \(\dot{\phi_0} = \cancelto{\omega_0}{\partial_0 \phi_0} + \epsilon \partial_1 \phi_0\), and substituting \(\omega_0=\partial_0 \sigma\), we obtain the final amplitude-phase dynamic equations:
+</p>
+\begin{align}
+\label{eq-mmsfin}
+  \dot{a_0} &= -\epsilon \mu a_0 - \epsilon \frac{F}{2\omega_0} \sin\beta\\
+  \dot{\beta_0} &= -(\dot{\sigma}-\omega_0) + \epsilon \frac{3\alpha}{8\omega_0} a_0^3 -
+              \epsilon \frac{F}{2a_0\omega_0} \cos\beta_0.
+\end{align}</li>
+</ol></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgeac8c89" class="outline-3">
+<h3 id="orgeac8c89"><span class="section-number-3">2.3.</span> Comparing CXA and MMS</h3>
+<div class="outline-text-3" id="text-2-3">
+<ol class="org-ol">
+<li><p>
+The CXA &amp; MMS equations, side-by-side, for the case of periodic excitation, is (CXA on the left, MMS on the right):
+</p>
+\begin{alignat}{4}
+\label{eq-sidbysid}
+  \dot{a} &= -\mu a - \frac{F}{2\Omega} \sin\beta;\qquad &\dot{a} &= -\mu a -
+                                                   \frac{F}{2\omega_0}
+                                                   \sin\beta\\
+  \dot{\beta} &= -\frac{(\Omega^2-\omega_0^2)}{2\Omega} + \frac{3\alpha}{8\Omega} a^2 -
+            \frac{F}{2a\Omega} \cos\beta;\qquad &\dot{\beta} &= -(\Omega-\omega_0)+\frac{3\alpha}{8\omega_0}
+                                             a^2 - \frac{2a\omega_0} \cos\beta
+\end{alignat}</li>
+<li>Although dimensionally identical, they are fundamentally different.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-EMMS" class="outline-2">
+<h2 id="sec-EMMS"><span class="section-number-2">3.</span> Enriched MMS: A Path Forward?</h2>
+<div class="outline-text-2" id="text-sec-EMMS">
+<ol class="org-ol">
+<li><p>
+The EMMS approach seems promising. We introduce \(p\) as the homotopy parameter, and rewrite the equations of motion as,
+</p>
+\begin{align}
+\label{eq-homeom}
+\ddot{x} + \Omega^2 x + p 2\mu \dot{x} + p (\omega_0^2-\Omega^2) x + p \alpha x^3 = p
+  \frac{F}{2} e^{j\Omega t} + c.c.
+\end{align}</li>
+<li><p>
+Multiple time-scales and ordered solutions are expanded as,
+</p>
+\begin{align}
+\label{eq-hommscales}
+  T_0 &= t;\quad T_1 = p t;\quad\cdots \\
+  \implies \partial_t &= \partial_0 + p \partial_1 + \dots\\
+  \partial_t^2 &= \partial_0 + p 2 \partial_0\partial_1 + \dots,\\
+  x(T_0, T_1, \cdots) &= x_0(T_0, T_1, \cdots) + p x_1(T_0, T_1, \cdots) + \cdots.
+\end{align}</li>
+<li><p>
+The ordered equations in this case are:
+</p>
+\begin{alignat}{3}
+\label{eq-emmsordeqs}
+  \mathcal{O}(p^0):&\quad \partial_0^2 x_0 + \Omega^2 x_0 &= 0\\
+  \mathcal{O}(p^1):&\quad \partial_0^2 x_1 + \Omega^2 x_1 &= -\left(2\partial_0\partial_1 x_0 + 2\mu\partial_0x_0 -
+                                  (\Omega^2-\omega_0^2)x_0 + \alpha x_0^3\right) +
+                                  \frac{F}{2} e^{j\Omega t} + c.c.
+\end{alignat}</li>
+<li><p>
+<b>The zeroth order solution</b> is written as,
+</p>
+\begin{align}
+\label{eq-emmsO0}
+  x_0 &= \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+  s.t.\quad \partial_0 a_0 &= 0,\,\text{and,}\quad \partial_0 \phi_0 = \Omega.
+\end{align}
+<ol class="org-ol">
+<li><p>
+As before, we compute certain intermediate quantities to help compute the first order terms.
+</p>
+\begin{align}
+\label{eq-emmsintq}
+  \partial_0 x_0 &= j\Omega \frac{a_0}{2} e^{j\phi_0} + c.c.\\
+  2 \partial_0 \partial_1 x_0 &= \left(j\Omega \partial_1 a_0 - \Omega a_0 \partial_1 \phi_0 \right)
+                  e^{j\phi_0} + c.c.\\
+  x_0^3 &= \frac{3a_0^3}{8} e^{j\phi_0} + \frac{a_0^3}{8} e^{j3\phi_0} +
+          c.c..
+\end{align}</li>
+</ol></li>
+<li><p>
+<b>The first order equation</b> is written as
+</p>
+\begin{align}
+\label{eq-emmsO1eq}
+  \partial_0^2 x_1 + \Omega^2 x_1 = -\left(j\Omega \partial_1 a_0 - a\Omega \partial_1 \beta + j\mu\Omega a_0 -
+  \frac{(\Omega^2-\omega_0^2)}{2} a_0 + \frac{3\alpha}{8}a_0^3 - \frac{F}{2}
+  e^{-j\beta_0}\right) e^{j\phi_0} - \frac{\alpha}{8} a_0^3 e^{j3\phi_0} + c.c.,
+\end{align}
+<p>
+where the phase \(\beta_0\) is introduced the same way it was introduced for MMS above.
+</p></li>
+<li><p>
+Secular term cancellation (setting coefficient of \(e^{j\phi_0}\) to zero) leads one to the slow flow equations (after noting, as before, \(\dot{a_0} = \cancel{\partial_0 a_0} + p \partial_1 a_0\), and \(\dot{\beta_0} = \cancel{\partial_0 \beta_0} + p \partial_1 \beta_0\))
+</p>
+\begin{align}
+\label{eq-emmsslfleqs}
+  \dot{a_0} &= -p \mu a_0 - p \frac{F}{2\Omega} \sin\beta_0 \\
+  \dot{\beta_0} &= -p \frac{(\Omega^2-\omega_0^2)}{2\Omega} + p \frac{3\alpha}{8\Omega} a^2 - \frac{F}{2a_0\Omega} \cos\beta_0.
+\end{align}</li>
+<li>Setting the homotopy parameter \(p=1\) recovers the original system as per eq. \ref{eq-homeom}. In this case, it can be observed that eq. \ref{eq-emmsslfleqs} is <b>identical</b> to the slow flow equations from CXA (eq. \ref{eq-cxaH1})!</li>
+<li>IMO this finding itself is very novel and potentially important.</li>
+</ol>
+</div>
+<div id="outline-container-orgf156662" class="outline-3">
+<h3 id="orgf156662"><span class="section-number-3">3.1.</span> Where should we go from here?</h3>
+<div class="outline-text-3" id="text-3-1">
+<ol class="org-ol">
+<li>One great advantage with the EMMS approach is that it can be expanded to higher orders. <b>What does a better approximation of CXA look like?</b></li>
+<li>How applicable is the EMMS approach for <b>non-periodic excitations</b> ? Two examples are given below:
+<ol class="org-ol">
+<li><b>Bi-periodic excitation</b>:
+<ol class="org-ol">
+<li>Suppose excitation is \(f_{ex}(t) = \cos \Omega_1 t + \cos \Omega_2 t\), it is necessary to represent this is as a modulated excitation.</li>
+<li>Such a representation is not unique, but for \(\Omega_1 \approx \Omega_2\), a strong candidate is,
+\[ f_{ex}(t) = \underbrace{\cos\left(\frac{\Omega_1-\Omega_2}{2}t\right)}_{F(t)}
+         e^{j \overbrace{\frac{\Omega_1+\Omega_2}{2}t}^{\sigma(t)} } + c.c. \]</li>
+<li>\(f(t)\) is slowly varying, so it makes sense to have it as the modulation, and \(\sigma(t)\) is fast-varying, so it makes sense to have it as the phase.</li>
+</ol></li>
+<li><b>Narrow-band Random Excitation</b>:
+<ol class="org-ol">
+<li>A narrow band random signal can be constructed by choosing \(F(t)=F\) (constant) and \(\sigma(t)=\Omega t + \gamma w(t)\), where \(w(t)\) is a wiener process.</li>
+<li>The stochastic \(sigma(t)\) can be generated through the following \(\dot{\sigma}(t)\):
+\[ \dot{\sigma}(t) = \Omega + \gamma \eta(t), \]
+where \(\mathbb{E} \left[\eta(t)\right] = 0\) and \(\mathbb{E} \left[ \eta(t) \eta(t') \right] = \delta(t-t')\).</li>
+<li>In the above, \(\eta(t)\) is a standard normal variable that is drawn randomly at each time instant. An "Ito integral" of \(\eta(t)\) is the wiener process.</li>
+<li>\(\Omega\) is the center frequency and \(\gamma\) controls the bandwidth of the random excitation.</li>
+<li>This representation is amenable to the MMS equations above, but how this can be done with CXA is unclear.</li>
+<li>With EMMS, however, this is rather straightforward: We choose the center frequency \(\Omega\) as the natural frequency for the \(p=0\) system, and consider \(\gamma w(t)\) as a slow-time perturbation to this phase.</li>
+<li>It will be interesting to see how these compare here.</li>
+</ol></li>
+</ol></li>
+<li><p>
+All the approaches above are applicable to cases where the nonlinear system is characterized in terms of its nonlinear normal modes. In this case, these approaches help us synthesize the nonlinear near-resonant behavior.
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org978d6ca" class="outline-3">
+<h3 id="org978d6ca"><span class="section-number-3">3.2.</span> EMMS Expanded to second order (from Maxima)</h3>
+<div class="outline-text-3" id="text-3-2">
+<ol class="org-ol">
+<li>I also carried out expansion of EMMS to second order.</li>
+<li>Here are the final relationships.
+<ol class="org-ol">
+<li><p>
+Zeroth Order (\(\mathcal{O}(p^0)\)):
+</p>
+\begin{align}
+\label{eq-emms0}
+  \frac{\partial a_0}{\partial T_0} &= 0\nonumber\\
+  \frac{\partial \beta_0}{\partial T_0} &= 0
+\end{align}</li>
+<li><p>
+First Order (\(\mathcal{O}(p^1)\)):
+</p>
+\begin{align}
+\label{eq-emms1}
+  \frac{\partial a_0}{\partial T_1} &= -\mu a_0 - \frac{F}{2\Omega} \sin \beta_0 \nonumber\\
+  \frac{\partial \beta_0}{\partial T_1} &= -\frac{(\Omega^2-\omega_0^2)}{2\Omega} + \frac{3\alpha}{8\Omega}a_0^2 -
+                        \frac{F}{2\Omega a_0}\cos \beta_0 -\partial_1 \sigma
+\end{align}</li>
+<li><p>
+Second Order (\(\mathcal{O}(p^2)\)):
+</p>
+\begin{align}
+\label{eq-emms2}
+  \frac{\partial a_0}{\partial T_2} =& \frac{F\mu}{4\Omega^2} \cos \beta_0 + 
+                         (8\Omega\partial_1 \sigma-4(\Omega^2-\omega_0^2)+9\alpha a_0^2)
+                         \frac{F}{32\Omega^3} \sin \beta_0 +
+                         \frac{3\alpha\mu}{8\Omega^2} a_0^3 \nonumber\\
+  \frac{\partial \beta_0}{\partial T_2} =& (8\Omega\partial_1 \sigma-4(\Omega^2-\omega_0^2)+9\alpha a_0^2)
+                         \frac{F}{32\Omega^3 a_0} \cos \beta_0 - \frac{F\mu}{4\Omega^2 a_0}
+                         \sin \beta_0 \nonumber\\
+                       & -\frac{9\alpha^2}{128\Omega^3} a_0^4 +
+                         \frac{3\alpha(\Omega^2-\omega_0^2)}{16\Omega^3} a_0^2 -
+                         \frac{{(\Omega^2-\omega_0^2)}^2}{8\Omega^3} - \frac{\mu^2}{2\Omega} - \partial_2 \sigma
+\end{align}</li>
+</ol></li>
+<li>Unlike before, explicit slow time-dependence of the excitation \(\sigma\) is retained in the above forms (\(\partial_1 \sigma\), \(\partial_2 \sigma\)).</li>
+<li>At first order a reasonable approximation for this is \(p \partial_1 \sigma=\dot{\sigma}-\Omega + \cancel{\mathcal{O}(p^2)}\).</li>
+<li>At second order, however, since the \(\mathcal{O}(p^2)\) terms can't be canceled, one has to make simplifying assumptions.
+<ol class="org-ol">
+<li>One possibility is to assume that \(\dot{\sigma} = \Omega + p \partial_1 \sigma\), assuming \(\partial_2 \sigma=0\). In other words, all variations of the excitation phase from the "center frequency" \(\Omega\) occur as first order perturbations and there exists no second order perturbations.</li>
+<li><p>
+Under this assumption, the amplitude-phase dynamics are represented as,
+</p>
+\begin{align}
+\label{eq-emms2_simp}
+  \dot{a_0} =& -\textcolor{red}{p}\biggl(\mu a_0 + \frac{3F}{4\Omega}\sin \beta_0 - \dot{\sigma}
+             \frac{F}{4\Omega^2}\sin \beta_0\biggr) +\nonumber\\
+           & \textcolor{red}{p^2} \biggl( \frac{3\alpha\mu}{8\Omega^2} a_0^3 +
+             \frac{F\mu}{4\Omega^2}\cos \beta_0 + (9\alpha a_0^3 - 4(\Omega^2-\omega_0^2))
+             \frac{F}{32\Omega^3} \sin \beta_0 \biggr)\nonumber\\
+             \dot{\beta_0} =& (\Omega-\dot{\sigma}) + \textcolor{red}{p}\biggl( \frac{\omega_0^2-\Omega^2}{2\Omega} +
+                          \frac{3\alpha}{8\Omega}a_0^2 -\frac{3F}{4\Omega a_0}\cos \beta_0 + \dot{\sigma}
+                          \frac{F}{4\Omega^2 a_0}\cos \beta_0\biggr) +\nonumber\\
+           & \textcolor{red}{p^2} \biggl( -\frac{{(\Omega^2-\omega_0^2)}^2}{8\Omega^3} - \frac{\mu^2}{2\Omega}
+             - \frac{3\alpha}{16\Omega^3}(\Omega^2-\omega_0^2)a_0^2 -
+             \frac{9\alpha^2}{128\Omega^3}a_0^4 +\nonumber\\
+           &(3\alpha a_0^2-4(\Omega^2-\omega_0^2)) \frac{F}{32\Omega^3 a_0}\cos \beta_0 -
+             \frac{F\mu}{4\Omega^2 a_0}\sin \beta_0\biggr) 
+\end{align}</li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb0cecf6" class="outline-2">
+<h2 id="orgb0cecf6"><span class="section-number-2">4.</span> References</h2>
+<div class="outline-text-2" id="text-4">
+<style>.csl-left-margin{float: left; padding-right: 0em;}
+ .csl-right-inline{margin: 0 0 0 1em;}</style><div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>
+    <div class="csl-left-margin">[1]</div><div class="csl-right-inline">L. I. Manevitch, “Complex representation of dynamics of coupled nonlinear oscillators,” <i>Mathematical models of non-linear excitations, transfer, dynamics, and control in condensed systems and other media</i>, pp. 269–300, 1999, doi: <a href="https://doi.org/10.1007/978-1-4615-4799-0_24">10.1007/978-1-4615-4799-0_24</a>.</div>
+  </div>
+</div>
+
+<script type="text/javascript">
+// Collapse on Click //////////////////////////////////////////////////////////
+var secs = document.querySelectorAll('[id^="outline-container-"]');
+
+var ocrgx = /^outline-text-(?=.*[5-9]\d*$).*$/;
+var rcns = document.querySelectorAll('[class^="outline-text-"]');
+var rcnsf = Array.from(rcns).filter(function (element)
+                                  {return ocrgx.test(element.className);});
+var rcprs = rcnsf.map(function(e) {return e.parentElement;});
+
+Array.from(secs).forEach(function(sec) {
+    var cln = sec.className.substr(8);
+    var ttl = sec.getElementsByTagName("h"+cln)[0];
+    var cnt = sec.getElementsByClassName("outline-text-"+cln)[0];
+
+    ttl.style.cursor = 'pointer';
+    ttl.addEventListener("click", function (e) {
+        cnt.style.display = (cnt.style.display=='')?'none':'';});
+    ttl.addEventListener("mouseover", function(){ttl.style.color="red";});
+    ttl.addEventListener("mouseout", function(){ttl.style.color="black";});
+});
+
+for (var i = 0; i < rcprs.length; i++) {
+  (function(index) {
+      rcprs[index].style.cursor = 'pointer';
+      rcprs[index].addEventListener("click", function (e) {
+          rcnsf[index].style.display = (rcnsf[index].style.display=='')?'none':'';});
+    })(i);
+}
+
+// Collapse all on button press ///////////////////////////////////////////////
+var stat = '';
+var btn = document.getElementsByClassName("tglv");
+function togglevisib(e=1) {
+    for (var i = 0; i < rcns.length; i++)
+        rcns[i].style.display = (stat=='')?'none':'';
+    for (var j = 0; j < btn.length; j++)
+        btn[j].value = (stat=='')?'show all':'hide all';    
+    stat = (stat=='')?'none':'';
+}
+for (var i = 0; i < btn.length; i++) btn[i].addEventListener("click", togglevisib);
+document.addEventListener('keypress', function(e) {if (e.which==116) togglevisib();});
+
+togglevisib();
+</script>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2023-10-25 Wed 00:00</p>
+<p class="author">Author: Nidish Narayanaa Balaji</p>
+<p class="date">Created: 2024-02-03 Sat 08:39</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
