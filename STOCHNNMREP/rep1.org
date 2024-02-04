@@ -9,8 +9,8 @@
 #+html_head_extra: <style> .quiltish img { max-height: 400px; min-height: 100px; max-width: 100%;  } </style>
 #+html_head: <link rel="stylesheet" href="./org-info.css" type="text/css"/>
 # #+infojs_opt: view:overview mouse:underline toc:nil ltoc:nil
-# #+html_head: <link rel="stylesheet" href="./tufte.css" type="text/css"/>
-# #+html_head: <link rel="stylesheet" href="./ox-tufte.css" type="text/css" />
+#+html_head: <link rel="stylesheet" href="./tufte.css" type="text/css"/>
+#+html_head: <link rel="stylesheet" href="./ox-tufte.css" type="text/css" />
 
 #+html: <input id="fixbut" type="button" value="hide all" class="tglv" class="right">
 #+html: <input id="fixbut2" type="button" value="dark mode" class="tgld" class="right">
