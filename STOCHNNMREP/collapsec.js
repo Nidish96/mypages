@@ -13,6 +13,8 @@ Array.from(secs).forEach(function(sec) {
     var cnt = sec.getElementsByClassName("outline-text-"+cln)[0];
     
     ttl.style.cursor = 'pointer';
+    ttl.addEventListener("mouseover", function(){ttl.style.color="red";});
+    ttl.addEventListener("mouseout", function(){ttl.style.color='';});
     ttl.addEventListener("click", function (e) {
 	cnt.style.display = (cnt.style.display=='')?'none':'';});
 });
@@ -22,6 +24,9 @@ for (var i = 0; i < rcprs.length; i++) {
       rcprs[index].style.cursor = 'pointer';
       rcprs[index].addEventListener("click", function (e) {
 	  rcnsf[index].style.display = (rcnsf[index].style.display=='')?'none':'';});
+
+      rcprs[index].addEventListener("mouseover", function(){rcprs[index].style.color="red";});
+      rcprs[index].addEventListener("mouseout", function(){rcprs[index].style.color='';});
     })(i);
 }
 

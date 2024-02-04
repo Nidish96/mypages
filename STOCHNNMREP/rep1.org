@@ -514,7 +514,7 @@
           als[i].style.textShadow='0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8';	
       else for (var i = 0; i < als.length; i++)
           als[i].style.textShadow='0.03em 0 #151515, -0.03em 0 #151515, 0 0.03em #151515, 0 -0.03em #151515, 0.06em 0 #151515, -0.06em 0 #151515, 0.09em 0 #151515, -0.09em 0 #151515, 0.12em 0 #151515, -0.12em 0 #151515, 0.15em 0 #151515, -0.15em 0 #151515';
-      std=(std=='dark')?'light':'dark';
+      std=(std=='dark')?'light':'dark';    
   }
 
   btnd[0].addEventListener("click", toggledark);
