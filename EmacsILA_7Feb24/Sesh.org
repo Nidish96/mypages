@@ -76,9 +76,9 @@ Things to cover:
 + Emacs can supercharge *_your workflow_*
 + Percieved Barriers
   #+attr_reveal: :frag (appear)
-  + Windows? 90% of what I've shown works! ✌️
+  + [[color:red][Windows]]? 90% of what I've shown works! ✌️
     + Not all roses though 😬
-  + Time investment? Ask Jan! 😸
+  + [[color:red][Time investment]]? Ask Jan! 😸
     + ~1-2 weeks to get in; a lifetime to master 😃
   + [[color:red][Disruptive]]? 🤔
 + Hit me up anytime! 😺
