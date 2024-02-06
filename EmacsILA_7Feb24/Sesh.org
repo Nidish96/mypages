@@ -71,7 +71,8 @@ Things to cover:
 + These slides were made within Emacs [[https://orgmode.org/][Orgmode]], exported as a html with [[https://revealjs.com/][reveal.js]] (total dev. time: ~20mts)
   
 * 😃 Thank You! 😃
-#+reveal_html: <div class="column" style="float:left; width: 50%">
+#+reveal_html: <div class="column" style="float:left; width: 50%;font-size: 75%">
+#+attr_reveal: :frag (appear)
 + Emacs can supercharge *_your workflow_*
 + Percieved Barriers
   #+attr_reveal: :frag (appear)
