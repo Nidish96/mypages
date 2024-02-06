@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Supercharging your Workflow with Emacs</title>
+<meta name="author" content="Nidish Narayanaa Balaji"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css" id="theme"/>
+
+        <style>
+        /* From: https://endlessparentheses.com/public/css/endless.css */
+        /* See also: https://meta.superuser.com/questions/4788/css-for-the-new-kbd-style */
+        kbd
+        {
+          -moz-border-radius: 6px;
+          -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          -webkit-border-radius: 6px;
+          -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          background-color: #f7f7f7;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          color: #333;
+          display: inline-block;
+          font-family: 'Droid Sans Mono', monospace;
+          font-size: 80%;
+          font-weight: normal;
+          line-height: inherit;
+          margin: 0 .1em;
+          padding: .08em .4em;
+          text-shadow: 0 1px 0 #fff;
+          word-spacing: -4px;
+        
+          box-shadow: 2px 2px 2px #222; /* MA: An extra I've added. */
+        }
+        </style>
+        <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/tooltipster.bundle.min.css"/>
+        
+        <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-punk.min.css" />
+        
+        <script type="text/javascript">
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape('%3Cscript src="https://code.jquery.com/jquery-1.10.0.min.js"%3E%3C/script%3E'));
+            }
+        </script>
+        
+         <script type="text/javascript"            src="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+        
+          <script>
+                 $(document).ready(function() {
+                     $('.tooltip').tooltipster({
+                         theme: 'tooltipster-punk',
+                         contentAsHTML: true,
+                         animation: 'grow',
+                         delay: [100,500],
+                         // trigger: 'click'
+                         trigger: 'custom',
+                         triggerOpen: {
+                             mouseenter: true
+                         },
+                         triggerClose: {
+                             originClick: true,
+                             scroll: true
+                         }
+         });
+                 });
+             </script>
+        
+        <style>
+           abbr {color: red;}
+        
+           .tooltip { border-bottom: 1px dotted #000;
+                      color:red;
+                      text-decoration: none;}
+        </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Supercharging your Workflow with Emacs</h1><h2 class="author">Nidish Narayanaa Balaji</h2><h2 class="date">2024:Feb:7</h2><p class="date">Created: 2024-02-06 Tue 23:23</p>
+</section>
+<section id="table-of-contents-section">
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#/slide-org20cdb8a">Welcome to Emacs! 😄</a></li>
+<li><a href="#/slide-org1adeefa">Emacs for Latex 🤯</a></li>
+<li><a href="#/slide-orgfad6d38">Emacs for MATLAB 🤯🤯</a></li>
+<li><a href="#/slide-orgab1dae0">Miscellanies 🤯🤯🤯</a></li>
+<li><a href="#/slide-org0e7d233">😃 Thank You! 😃</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+
+<section>
+<section id="slide-org20cdb8a">
+<h2 id="org20cdb8a">Welcome to Emacs! 😄</h2>
+<div class="column" style="float:left; width: 50%">
+<p>
+Today's Session:
+</p>
+<form><ul>
+<li class="fragment appear">What?</li>
+<li class="fragment appear">Why?</li>
+<li class="fragment appear"><span style="color:red;">How?</span></li>
+
+</ul></form>
+</div>
+
+<div class="column" style="float:right; width: 50%">
+<p>
+Emacs-Ewoks @ ILA (Currently: Jan, Tihomir, I)
+<img src="../ewokswemacs.png" alt="ewokswemacs.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgc86fa3d">
+<h3 id="orgc86fa3d">What is Emacs?</h3>
+<blockquote>
+<p>
+An extensible, customizable, free/libre text editor — and more.
+At its core is an interpreter for Emacs Lisp, a dialect of the Lisp programming language with extensions to support text editing
+&#x2013; <b><a href="https://www.gnu.org/software/emacs/">The GNU Emacs Website</a></b>
+</p>
+</blockquote>
+
+</section>
+<section id="slide-org893c4d1">
+<h3 id="org893c4d1">What is Emacs?</h3>
+<p>
+🤙
+</p>
+<blockquote>
+<p>
+Emacs outshines all other editing software in approximately the same way that
+the noonday sun does the stars. It is not just bigger and brighter; it simply
+makes everything else vanish.
+&#x2013; <b>Neal Stephenson, In the Beginning was the Command Line (1998)</b>
+</p>
+</blockquote>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org1adeefa">
+<h2 id="org1adeefa">Emacs for Latex 🤯</h2>
+<p>
+Things to cover:
+</p>
+<form><ol>
+<li class="fragment appear">Compilation, navigation</li>
+<li class="fragment appear">Macro completions (figures, citations, references)</li>
+<li class="fragment appear">Environment insertion &amp; Manipulation</li>
+<li class="fragment appear">Snippet Insertion</li>
+<li class="fragment appear">Auto-activating Snippets for Math</li>
+<li class="fragment appear">Lazytab based tables</li>
+
+</ol></form>
+
+</section>
+</section>
+<section>
+<section id="slide-orgfad6d38">
+<h2 id="orgfad6d38">Emacs for MATLAB 🤯🤯</h2>
+<p>
+Things to cover:
+</p>
+<form><ol>
+<li class="fragment appear">MATLAB purpose layout</li>
+<li class="fragment appear">Interactive development with the MATLAB REPL</li>
+<li class="fragment appear">Help documentation</li>
+<li class="fragment appear">MATLAB over TRAMP</li>
+
+</ol></form>
+
+</section>
+</section>
+<section>
+<section id="slide-orgab1dae0">
+<h2 id="orgab1dae0">Miscellanies 🤯🤯🤯</h2>
+<form><ul>
+<li class="fragment appear">A few other things I use emacs for:
+<form><ul>
+<li class="fragment appear"><a href="https://www.orgroam.com/">Org-roam</a> based knowledge management</li>
+<li class="fragment appear"><a href="https://ctan.org/pkg/beamer?lang=en">Latex-beamer</a> and <a href="https://github.com/Nidish96/cart.el">cart.el</a> (<b><span class="underline">a package I wrote!</span></b> 🤭 ) for presentations</li>
+
+</ul></form></li>
+<li class="fragment appear">Org-based web development is quite powerful!
+<form><ul>
+<li><a href="https://nidish96.github.io/Abaqus4Joints/">Abaqus-Matlab Tutorial</a></li>
+<li>White paper examples: <a href="https://nidish96.github.io/mypages/EMMSWHITEPAPER/EMMSWhitePaper.html">one</a>, <a href="https://nidish96.github.io/mypages/STOCHNNMREP/rep1.html">two</a></li>
+
+</ul></form></li>
+<li class="fragment appear">These slides were made within Emacs <a href="https://orgmode.org/">Orgmode</a>, exported as a html with <a href="https://revealjs.com/">reveal.js</a> (total dev. time: ~20mts)</li>
+
+</ul></form>
+
+</section>
+</section>
+<section>
+<section id="slide-org0e7d233">
+<h2 id="org0e7d233">😃 Thank You! 😃</h2>
+<div class="column" style="float:left; width: 50%">
+<form><ul>
+<li>Emacs can supercharge <b><span class="underline">your workflow</span></b></li>
+<li>Percieved Barriers
+<form><ul>
+<li class="fragment appear">Windows? 90% of what I've shown works! ✌️
+<form><ul>
+<li>Not all roses though 😬</li>
+
+</ul></form></li>
+<li class="fragment appear">Time investment? Ask Jan! 😸
+<form><ul>
+<li>~1-2 weeks to get in; a lifetime to master 😃</li>
+
+</ul></form></li>
+<li class="fragment appear"><span style="color:red;">Disruptive</span>? 🤔</li>
+
+</ul></form></li>
+<li>Hit me up anytime! 😺</li>
+
+</ul></form>
+</div>
+
+<div class="column" style="float:right; width: 50%">
+
+<div id="orgc22aad5" class="figure">
+<p><img src="../ewokswemacs.png" alt="ewokswemacs.png" />
+</p>
+</div>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/search/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom/zoom.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealMarkdown, RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

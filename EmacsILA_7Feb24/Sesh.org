@@ -1,0 +1,88 @@
+:REVEAL_PROPERTIES:
+#+reveal_root: https://cdn.jsdelivr.net/npm/reveal.js
+#+reveal_reveal_js_version: 4
+#+reveal_init_options: slideNumber:true
+:END:
+
+#+title: Supercharging your Workflow with Emacs
+#+subtitle: ILA Brezel Session
+#+author: Nidish Narayanaa Balaji
+#+date: 2024:Feb:7
+#+options: num:nil toc:1
+
+* Welcome to Emacs! 😄
+#+reveal_html: <div class="column" style="float:left; width: 50%">
+Today's Session:
+#+attr_reveal: :frag (appear)
++ What?
++ Why?
++ [[color:red][How?]]
+#+reveal_html: </div>
+
+#+reveal_html: <div class="column" style="float:right; width: 50%">
+Emacs-Ewoks @ ILA (Currently: Jan, Tihomir, I)
+[[file:./ewokswemacs.png]]
+#+reveal_html: </div>
+
+** What is Emacs?
+#+begin_quote 
+An extensible, customizable, free/libre text editor — and more.
+At its core is an interpreter for Emacs Lisp, a dialect of the Lisp programming language with extensions to support text editing
+-- *[[https://www.gnu.org/software/emacs/][The GNU Emacs Website]]*
+#+end_quote
+
+** What is Emacs?
+🤙
+#+begin_quote 
+Emacs outshines all other editing software in approximately the same way that
+the noonday sun does the stars. It is not just bigger and brighter; it simply
+makes everything else vanish.
+-- *Neal Stephenson, In the Beginning was the Command Line (1998)*
+#+end_quote
+
+ 
+* Emacs for Latex 🤯
+Things to cover:
+#+attr_reveal: :frag (appear)
+1. Compilation, navigation
+2. Macro completions (figures, citations, references)
+3. Environment insertion & Manipulation
+4. Snippet Insertion
+5. Auto-activating Snippets for Math
+6. Lazytab based tables
+
+* Emacs for MATLAB 🤯🤯
+Things to cover:
+#+attr_reveal: :frag (appear)
+1. MATLAB purpose layout
+2. Interactive development with the MATLAB REPL
+3. Help documentation
+4. MATLAB over TRAMP
+
+* Miscellanies 🤯🤯🤯
+#+attr_reveal: :frag (appear)
++ A few other things I use emacs for:
+  #+attr_reveal: :frag (appear)
+  + [[https://www.orgroam.com/][Org-roam]] based knowledge management
+  + [[https://ctan.org/pkg/beamer?lang=en][Latex-beamer]] and [[https://github.com/Nidish96/cart.el][cart.el]] (*_a package I wrote!_* 🤭 ) for presentations
++ Org-based web development is quite powerful!
+  + [[https://nidish96.github.io/Abaqus4Joints/][Abaqus-Matlab Tutorial]]
+  + White paper examples: [[https://nidish96.github.io/mypages/EMMSWHITEPAPER/EMMSWhitePaper.html][one]], [[https://nidish96.github.io/mypages/STOCHNNMREP/rep1.html][two]]
++ These slides were made within Emacs [[https://orgmode.org/][Orgmode]], exported as a html with [[https://revealjs.com/][reveal.js]] (total dev. time: ~20mts)
+  
+* 😃 Thank You! 😃
+#+reveal_html: <div class="column" style="float:left; width: 50%">
++ Emacs can supercharge *_your workflow_*
++ Percieved Barriers
+  #+attr_reveal: :frag (appear)
+  + Windows? 90% of what I've shown works! ✌️
+    + Not all roses though 😬
+  + Time investment? Ask Jan! 😸
+    + ~1-2 weeks to get in; a lifetime to master 😃
+  + [[color:red][Disruptive]]? 🤔
++ Hit me up anytime! 😺
+#+reveal_html: </div>
+
+#+reveal_html: <div class="column" style="float:right; width: 50%">
+[[file:./ewokswemacs.png]]
+#+reveal_html: </div>

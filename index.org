@@ -5,10 +5,11 @@
 Here I have my pages
 
 * A White Paper on EMMS
-+ Here is the Page: [[https://nidish96.github.io/mypages/EMMSWHITEPAPER/EMMSWhitePaper.html]]
+[[https://nidish96.github.io/mypages/EMMSWHITEPAPER/EMMSWhitePaper.html]]
 * SNMT Approaches Applied to Phase Noise Excitation
-+ Here is the page: [[https://nidish96.github.io/mypages/STOCHNNMREP/rep1.html]]
-
+[[https://nidish96.github.io/mypages/STOCHNNMREP/rep1.html]]
+* Emacs Brezel Session
+[[https://nidish96.github.io/mypages/EmacsILA_7Feb24/Sesh.html]]
 #+begin_src inline-js
   // document.body.style.background='black';
   // document.body.style.color='white';
