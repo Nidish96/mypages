@@ -21,7 +21,7 @@ Today's Session:
 
 #+reveal_html: <div class="column" style="float:right; width: 50%">
 Emacs-Ewoks @ ILA (Currently: Jan, Tihomir, I)
-[[file:./ewokswemacs.png]]
+[[file:https://nidish96.github.io/mypages/EmacsILA_7Feb24/ewokswemacs.png]]
 #+reveal_html: </div>
 
 ** What is Emacs?
@@ -84,5 +84,5 @@ Things to cover:
 #+reveal_html: </div>
 
 #+reveal_html: <div class="column" style="float:right; width: 50%">
-[[file:./ewokswemacs.png]]
+[[file:https://nidish96.github.io/mypages/EmacsILA_7Feb24/ewokswemacs.png]]
 #+reveal_html: </div>
