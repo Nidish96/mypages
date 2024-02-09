@@ -459,26 +459,29 @@
 #+begin_export html
   <div class="row fullwidth">
     <figure class="column">
-      <img src="./FIGS/ZG_duffing_1.png" alt="ZG_duffing_1.png" width="100%">
+      <img src="./FIGS/ZG_duffing_1.png" alt="ZG_duffing_1.png" width="80%">
       <figcaption class="colcap">True Displacement \[u(t)\]</figcaption>
     </figure>
     <figure class="column">
-      <img src="./FIGS/ZG_duffing_2.png" alt="ZG_duffing_2.png" width="100%">
+      <img src="./FIGS/ZG_duffing_2.png" alt="ZG_duffing_2.png" width="80%">
       <figcaption class="colcap">Displacement Amplitude \[q(t)=\lvert u+j\frac{\dot{u}}{\Omega} \rvert\]</figcaption>
     </figure>
   </div>
 #+end_export
-+ I am retrying with higher damping
++ I am retrying with higher damping since transient effects may still be present (see deterministic simulation below):
+  #+attr_html: :width 100%
+  #+caption: Transient response to deterministic excitation $F\cos\Omega t$
+  [[file:./FIGS/ZG_duffing_determ.png]]
 *** Jenkins system
 + For the Jenkins system it looks "nominally converged" and more promising than before.
 #+begin_export html
   <div class="row fullwidth">
     <figure class="column">
-      <img src="./FIGS/ZG_jenkins_1.png" alt="ZG_jenkins_1.png" width="100%">
+      <img src="./FIGS/ZG_jenkins_1.png" alt="ZG_jenkins_1.png" width="80%">
       <figcaption class="colcap">True Displacement \[u(t)\]</figcaption>
     </figure>
     <figure class="column">
-      <img src="./FIGS/ZG_jenkins_2.png" alt="ZG_jenkins_2.png" width="100%">
+      <img src="./FIGS/ZG_jenkins_2.png" alt="ZG_jenkins_2.png" width="80%">
       <figcaption class="colcap">Displacement Amplitude \[q(t)=\lvert u+j\frac{\dot{u}}{\Omega}\rvert\]</figcaption>
     </figure>
   </div>
@@ -487,19 +490,19 @@
   #+begin_export html
   <div class="row fullwidth">
     <figure class="column">
-      <img src="./FIGS/G3_SLFDENS_jenkins_mms1.png" alt="G3_SLFDENS_jenkins_mms1.png" width="100%">
+      <img src="./FIGS/G3_SLFDENS_jenkins_mms1.png" alt="G3_SLFDENS_jenkins_mms1.png" width="75%">
       <figcaption class="colcap">MMS1</figcaption>
     </figure>
     <figure class="column">
-      <img src="./FIGS/G3_SLFDENS_jenkins_mms2.png" alt="G3_SLFDENS_jenkins_mms2.png" width="100%">
+      <img src="./FIGS/G3_SLFDENS_jenkins_mms2.png" alt="G3_SLFDENS_jenkins_mms2.png" width="75%">
       <figcaption class="colcap">MMS2</figcaption>
     </figure>
     <figure class="column">
-      <img src="./FIGS/G3_SLFDENS_jenkins_emms1.png" alt="G3_SLFDENS_jenkins_emms1.png" width="100%">
+      <img src="./FIGS/G3_SLFDENS_jenkins_emms1.png" alt="G3_SLFDENS_jenkins_emms1.png" width="75%">
       <figcaption class="colcap">CXA (EMMS1)</figcaption>
     </figure>
     <figure class="column">
-      <img src="./FIGS/G3_SLFDENS_jenkins_emms2.png" alt="G3_SLFDENS_jenkins_emms2.png" width="100%">
+      <img src="./FIGS/G3_SLFDENS_jenkins_emms2.png" alt="G3_SLFDENS_jenkins_emms2.png" width="75%">
       <figcaption class="colcap">EMMS2</figcaption>
     </figure>    
   </div>
