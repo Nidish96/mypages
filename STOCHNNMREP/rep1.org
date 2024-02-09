@@ -441,6 +441,71 @@
 *** Things to try
 + Linear interpolation
 + DG for discretization 
+* Week 3
+** Transient Simulation of original system
++ I'm converting the original system to state-space,
+  $$ \frac{d}{dt}\begin{bmatrix} u\\\dot{u} \end{bmatrix} = \begin{bmatrix}
+    0&1\\-\omega_n^2&-2\zeta_n\omega_n \end{bmatrix} \begin{bmatrix}
+      u\\\dot{u} \end{bmatrix} + \begin{bmatrix} 0\\
+        f_{nl}(u,\dot{u},u_p, \dots) \end{bmatrix} + \begin{bmatrix} 0\\ F\cos\sigma(t) \end{bmatrix} $$
++ I'm using Euler schemes, but getting convergence seems challenging
++ My strategy is to conduct the simulations with different step sizes *until the PDFs converge*
++ I am comparing the pdfs of the displacement $u$ and an amplitude measure that is motivated by CXA:
+  $$ q(t) = \rvert u+j \frac{\dot{u}}{\Omega}\rvert. $$
++ This is supposed to be an estimate of the envelope of the response (but, as already seen above, this is a biased estimate and has issues)
++ We use this estimate for comparisons at this stage.
+*** Duffing system
++ Here are the PDFs coming from transient results. It doesn't look quite converged yet.
+#+begin_export html
+  <div class="row fullwidth">
+    <figure class="column">
+      <img src="./FIGS/ZG_duffing_1.png" alt="ZG_duffing_1.png" width="100%">
+      <figcaption class="colcap">True Displacement \[u(t)\]</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/ZG_duffing_2.png" alt="ZG_duffing_2.png" width="100%">
+      <figcaption class="colcap">Displacement Amplitude \[q(t)=\lvert u+j\frac{\dot{u}}{\Omega} \rvert\]</figcaption>
+    </figure>
+  </div>
+#+end_export
++ I am retrying with higher damping
+*** Jenkins system
++ For the Jenkins system it looks "nominally converged" and more promising than before.
+#+begin_export html
+  <div class="row fullwidth">
+    <figure class="column">
+      <img src="./FIGS/ZG_jenkins_1.png" alt="ZG_jenkins_1.png" width="100%">
+      <figcaption class="colcap">True Displacement \[u(t)\]</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/ZG_jenkins_2.png" alt="ZG_jenkins_2.png" width="100%">
+      <figcaption class="colcap">Displacement Amplitude \[q(t)=\lvert u+j\frac{\dot{u}}{\Omega}\rvert\]</figcaption>
+    </figure>
+  </div>
+#+end_export
++ Here I am comparing this with the four slow-flow approaches
+  #+begin_export html
+  <div class="row fullwidth">
+    <figure class="column">
+      <img src="./FIGS/G3_SLFDENS_jenkins_mms1.png" alt="G3_SLFDENS_jenkins_mms1.png" width="100%">
+      <figcaption class="colcap">MMS1</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SLFDENS_jenkins_mms2.png" alt="G3_SLFDENS_jenkins_mms2.png" width="100%">
+      <figcaption class="colcap">MMS2</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SLFDENS_jenkins_emms1.png" alt="G3_SLFDENS_jenkins_emms1.png" width="100%">
+      <figcaption class="colcap">CXA (EMMS1)</figcaption>
+    </figure>
+    <figure class="column">
+      <img src="./FIGS/G3_SLFDENS_jenkins_emms2.png" alt="G3_SLFDENS_jenkins_emms2.png" width="100%">
+      <figcaption class="colcap">EMMS2</figcaption>
+    </figure>    
+  </div>
+  #+end_export
++ The most marked feature is the *strong asymmetry in the distribution*, indicating the saturating nature of the nonlinearity.
++ There is still some peak mismatch, but this is potentially due to the fact that the amplitude estimate has some bias 
 * References
 #+print_bibliography: References
 
