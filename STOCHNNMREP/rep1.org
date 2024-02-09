@@ -585,4 +585,6 @@
   btnd[0].addEventListener("click", toggledark);
 
   document.addEventListener('keypress', function(e) {if (e.which==100) {toggledark();}})
+
+  toggledark();
 #+end_src
