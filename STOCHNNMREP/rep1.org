@@ -6,7 +6,7 @@
 #+bibliography: Stochastic.bib
 #+cite_export: csl ieee.csl
 #+html_head: <script type="text/javascript" src="https://livejs.com/live.js"></script>
-#+html_head_extra: <style> .quiltish img { max-height: 400px; min-height: 100px; max-width: 100%;  } </style>
+# #+html_head_extra: <style> .quiltish img { max-height: 400px; min-height: 100px; max-width: 100%;  } </style>
 #+html_head: <link rel="stylesheet" href="./org-info.css" type="text/css"/>
 # #+infojs_opt: view:overview mouse:underline toc:nil ltoc:nil
 #+html_head: <link rel="stylesheet" href="./tufte.css" type="text/css"/>
@@ -509,6 +509,34 @@
   #+end_export
 + The most marked feature is the *strong asymmetry in the distribution*, indicating the saturating nature of the nonlinearity.
 + There is still some peak mismatch, but this is potentially due to the fact that the amplitude estimate has some bias 
+* Week 4
+** Experimental Testing
+*** Linear Modal Testing
+#+HTML_HEAD_EXTRA: <style> .quiltish img { max-height: 200px; min-height: 100px; } </style>
+#+attr_html: :class quiltish
+#+CAPTION: Overview of Experimental Setup
+#+begin_figure
+[[file:./EXPFIGS/20240212_143349.jpg]]
+[[file:./EXPFIGS/20240212_143354.jpg]]
+[[file:./EXPFIGS/20240212_143409.jpg]]
+[[file:./EXPFIGS/20240212_161209.jpg]]
+[[file:./EXPFIGS/20240212_161210.jpg]]
+#+end_figure
++ We have placed the impedence sensors close to the shaker and we measure the force and voltage at the shaker's location
++ Here's a summary of the measured channels
+  | <l>     | <l>                    |
+  | Channel | Description            |
+  |---------+------------------------|
+  | 1       | Force @ Imp. head      |
+  | 2       | Accel. @ Imp. head     |
+  | 3-8     | Accels. along beam     |
+  | 9       | Voltage out (T-ed out) |
++ Here are the mode shapes we got through multisine testing
+  #+attr_html: :width 100%
+  [[file:EXPFIGS/shapes.png]]
++ Here's the force-voltage transfer function at the shaker head
+  #+attr_html: :width 100%
+  [[file:EXPFIGS/forcevolt.png]]
 * References
 #+print_bibliography: References
 

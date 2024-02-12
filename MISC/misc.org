@@ -1,0 +1,109 @@
+#+title: Implementation and Validation of the Fokker-Planck Equation for Narrow-band excitation
+#+author: Nidish Balaji
+#+date: 2024:Jan:17
+#+options: toc:nil
+#+latex_header: \usepackage{biblatex}
+#+bibliography: refs.bib
+#+cite_export: csl ieee.csl
+#+html_head: <script type="text/javascript" src="https://livejs.com/live.js"></script>
+# #+html_head_extra: <style> .quiltish img { max-height: 400px; min-height: 100px; max-width: 100%;  } </style>
+#+html_head: <link rel="stylesheet" href="./org-info.css" type="text/css"/>
+# #+infojs_opt: view:overview mouse:underline toc:nil ltoc:nil
+#+html_head: <link rel="stylesheet" href="./tufte.css" type="text/css"/>
+#+html_head: <link rel="stylesheet" href="./ox-tufte.css" type="text/css" />
+
+* Lock-in Lock-off Paper
++ I was considering the slow flow equations to see if we can use them for branch-switching
+  #+attr_html: :width 80%
+  [[file:FIGS/I1_EPMCFIT.png]]
++ It looks like this offers a great way of *detecting bifurcation* but not of giving a good search direction.
+  #+attr_html: :width 80%
+  [[file:FIGS/I1_SNMFRESP.png]]
++ This is consistent with the observations with the analytical example I had considered earlier
+  #+attr_html: :width 80%
+  [[file:FIGS/E_ANSOLMMS_FVPO1.png]]
+  
+  
+
+* References
+#+print_bibliography: References
+
+#+begin_export html
+<script type="text/javascript" src="./collapsec.js"></script>
+<style>  
+  #fixbut {
+      position: fixed;
+      top: 10px; /* Adjust the top position as needed */
+      right: 10px; /* Adjust the right position as needed */
+      padding: 10px;
+      background-color: #fffff8;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  #fixbut2 {
+      position: fixed;
+      top: 10px; /* Adjust the top position as needed */
+      left: 10px; /* Adjust the right position as needed */
+      padding: 10px;
+      background-color: #fffff8;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  .column {
+    float: left;
+    width: 50%;
+  }
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .column4 {
+    float: left;
+    width: 25%;
+    text-align: center;
+  }
+
+  .colcap {
+  text-align: center;
+  }
+</style>
+#+end_export
+
+#+begin_src inline-js
+  togglevisib();
+  var art = document.getElementsByTagName('article')[0];
+  var std = 'dark';
+  var btnd = document.getElementsByClassName("tgld");
+  var als = document.getElementsByTagName('a');
+  var alss = Array.from(als).concat(Array.from(
+      document.getElementsByClassName('tufte-underline'))).concat(Array.from(
+          document.getElementsByClassName('hover-tufte-underline:hover')));
+
+  function toggledark(e) {
+      document.body.style.backgroundColor=(std=='dark')?'#fffff8':'#151515';
+      document.body.style.color=(std=='dark')?'#111':'#ddd';
+      btnd[0].value=std+' mode';
+      btnd[0].style.backgroundColor=(std=='dark')?'#111':'#ddd';
+      btnd[0].style.color=(std=='dark')?'#fffff8':'#151515';
+      btn[0].style.backgroundColor=(std=='dark')?'#111':'#ddd';
+      btn[0].style.color=(std=='dark')?'#fffff8':'#151515';
+      if (std=='dark') for (var i = 0; i < als.length; i++)
+          als[i].style.textShadow='0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8';	
+      else for (var i = 0; i < als.length; i++)
+          als[i].style.textShadow='0.03em 0 #151515, -0.03em 0 #151515, 0 0.03em #151515, 0 -0.03em #151515, 0.06em 0 #151515, -0.06em 0 #151515, 0.09em 0 #151515, -0.09em 0 #151515, 0.12em 0 #151515, -0.12em 0 #151515, 0.15em 0 #151515, -0.15em 0 #151515';
+      std=(std=='dark')?'light':'dark';    
+  }
+
+  btnd[0].addEventListener("click", toggledark);
+
+  document.addEventListener('keypress', function(e) {if (e.which==100) {toggledark();}})
+
+  toggledark();
+#+end_src

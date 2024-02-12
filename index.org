@@ -14,3 +14,5 @@ Here I have my pages
   // document.body.style.background='black';
   // document.body.style.color='white';
 #+end_src  
+* Miscellanies
+[[https://nidish96.github.io/mypages/MISC/misc.html]]
